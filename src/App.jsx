@@ -4,16 +4,13 @@ import {
   UserCheck, 
   Send, 
   CheckCircle2, 
-  HelpCircle, 
-  Phone, 
   User, 
   Maximize2, 
   Layers, 
   ShieldCheck, 
   ArrowRight, 
   RotateCcw,
-  Sparkles,
-  DollarSign
+  Sparkles
 } from 'lucide-react';
 import { PRICING_CONFIG, calcularCotizacion } from './pricingConfig';
 
@@ -35,7 +32,6 @@ export default function App() {
   });
 
   // Estado del Formulario Modo Cliente (Filtro Captación)
-  const [clienteStep, setClienteStep] = useState(1);
   const [clienteForm, setClienteForm] = useState({
     tipologiaId: 'corrediza_2h',
     anchoAprox: 150,
@@ -43,8 +39,7 @@ export default function App() {
     calidadVidrio: 'dvh',
     nombre: '',
     telefono: '',
-    zona: 'Montevideo / Canelones',
-    comentarios: ''
+    zona: 'Montevideo / Canelones'
   });
   const [clienteEnviado, setClienteEnviado] = useState(false);
 
@@ -58,7 +53,7 @@ export default function App() {
     colorId: tallerForm.colorId
   });
 
-  // Generador de enlace y mensaje de WhatsApp para el carpintero
+  // Generador de mensaje WhatsApp
   const handleEnviarWhatsApp = () => {
     if (!cotizacion) return;
 
@@ -86,40 +81,36 @@ export default function App() {
     window.open(url, '_blank');
   };
 
-  // Envío del Formulario de Filtro Cliente (Simulación Webhook n8n)
   const handleEnviarFiltroCliente = (e) => {
     e.preventDefault();
     setClienteEnviado(true);
-
-    // Aquí n8n recibiría el webhook en la versión productiva
-    console.log('Lead enviado a n8n CRM:', clienteForm);
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col antialiased">
-      {/* Header Corporativo AGN-JOB */}
-      <header className="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col antialiased selection:bg-purple-500 selection:text-white">
+      {/* Header Corporativo Grupo AGN */}
+      <header className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] text-white shadow-lg sticky top-0 z-50 border-b border-purple-800/40">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="bg-blue-600 p-2 rounded-lg text-white font-black tracking-wider flex items-center justify-center">
-              AGN
-            </div>
-            <div>
-              <div className="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
-                JOV <span className="bg-blue-500/20 text-blue-400 text-xs px-2 py-0.5 rounded-full font-medium border border-blue-500/30">Beta 1.0</span>
+          <div className="flex items-center space-x-3">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="font-black text-xl tracking-tight text-white">GRUPO AGN</span>
+                <span className="bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-sm">
+                  Demo
+                </span>
               </div>
-              <div className="text-[11px] text-slate-400 leading-tight">Cotizador Express de Aberturas</div>
+              <span className="text-[11px] text-purple-200 font-medium">Cotizador Express de Aberturas</span>
             </div>
           </div>
 
           {/* Switcher de Vista */}
-          <div className="bg-slate-800 p-1 rounded-xl flex items-center border border-slate-700">
+          <div className="bg-[#1f0a40]/70 p-1 rounded-2xl flex items-center border border-purple-400/20 backdrop-blur-sm">
             <button
               onClick={() => setActiveTab('taller')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'taller'
-                  ? 'bg-blue-600 text-white shadow'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
+                  : 'text-purple-200 hover:text-white'
               }`}
             >
               <Wrench className="w-3.5 h-3.5" />
@@ -127,10 +118,10 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('filtro_cliente')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'filtro_cliente'
-                  ? 'bg-blue-600 text-white shadow'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
+                  : 'text-purple-200 hover:text-white'
               }`}
             >
               <UserCheck className="w-3.5 h-3.5" />
@@ -141,19 +132,24 @@ export default function App() {
       </header>
 
       {/* Contenido Principal */}
-      <main className="flex-1 max-w-4xl w-full mx-auto p-4 pb-20">
+      <main className="flex-1 max-w-4xl w-full mx-auto p-4 pb-16">
 
         {/* ---------------------------------------------------- */}
         {/* VISTA 1: MODO TALLER (USO RÁPIDO DEL CARPINTERO)     */}
         {/* ---------------------------------------------------- */}
         {activeTab === 'taller' && (
           <div className="space-y-4">
-            {/* Banner de explicación rápida */}
-            <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-4 text-white shadow-sm flex items-center justify-between">
-              <div>
-                <span className="text-xs uppercase tracking-wider font-bold text-blue-300">Herramienta Interna</span>
-                <h1 className="text-lg md:text-xl font-bold">Calculá y despachá cotizaciones en 20 segundos</h1>
-                <p className="text-xs text-blue-200 mt-0.5">Ingresá medidas y enviá el presupuesto formal por WhatsApp con un solo clic.</p>
+            {/* Banner superior con paleta AGN */}
+            <div className="bg-gradient-to-r from-[#4a208e] via-[#5a207e] to-[#2c1256] rounded-3xl p-5 text-white shadow-sm flex items-center justify-between relative overflow-hidden">
+              <div className="relative z-10">
+                <span className="text-[11px] uppercase tracking-wider font-extrabold text-[#cb69fc] bg-purple-950/40 px-2.5 py-0.5 rounded-full inline-block mb-1 border border-purple-400/20">
+                  Uso Interno del Taller
+                </span>
+                <h1 className="text-xl font-bold">Calculá y despachá cotizaciones al instante</h1>
+                <p className="text-xs text-purple-200 mt-0.5">Ingresá medidas y enviá el presupuesto formal por WhatsApp en un toque.</p>
+              </div>
+              <div className="hidden sm:block absolute right-4 -bottom-6 opacity-10">
+                <Wrench className="w-36 h-36" />
               </div>
             </div>
 
@@ -162,9 +158,9 @@ export default function App() {
               <div className="md:col-span-7 space-y-4">
 
                 {/* 1. Medidas */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                <div className="bg-white rounded-3xl p-4 shadow-xs border border-purple-100">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-3">
-                    <Maximize2 className="w-4 h-4 text-blue-600" /> 1. Medidas de la abertura (cm)
+                    <Maximize2 className="w-4 h-4 text-[#4a208e]" /> 1. Medidas de la abertura (cm)
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
@@ -173,7 +169,7 @@ export default function App() {
                         type="number"
                         value={tallerForm.anchoCm}
                         onChange={(e) => setTallerForm({ ...tallerForm, anchoCm: e.target.value })}
-                        className="w-full text-xl font-bold text-slate-900 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full text-xl font-bold text-slate-900 bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2 focus:ring-2 focus:ring-[#4a208e] focus:outline-none transition-all"
                         placeholder="150"
                       />
                     </div>
@@ -183,7 +179,7 @@ export default function App() {
                         type="number"
                         value={tallerForm.altoCm}
                         onChange={(e) => setTallerForm({ ...tallerForm, altoCm: e.target.value })}
-                        className="w-full text-xl font-bold text-slate-900 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full text-xl font-bold text-slate-900 bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2 focus:ring-2 focus:ring-[#4a208e] focus:outline-none transition-all"
                         placeholder="120"
                       />
                     </div>
@@ -191,9 +187,9 @@ export default function App() {
                 </div>
 
                 {/* 2. Tipología */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                <div className="bg-white rounded-3xl p-4 shadow-xs border border-purple-100">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-3">
-                    <Layers className="w-4 h-4 text-blue-600" /> 2. Tipología
+                    <Layers className="w-4 h-4 text-[#4a208e]" /> 2. Tipología
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {PRICING_CONFIG.tipologias.map((tipo) => (
@@ -201,9 +197,9 @@ export default function App() {
                         key={tipo.id}
                         type="button"
                         onClick={() => setTallerForm({ ...tallerForm, tipologiaId: tipo.id })}
-                        className={`text-left p-2.5 rounded-xl border text-xs font-medium transition-all ${
+                        className={`text-left p-3 rounded-2xl border text-xs font-medium transition-all ${
                           tallerForm.tipologiaId === tipo.id
-                            ? 'border-blue-600 bg-blue-50 text-blue-900 font-semibold shadow-xs ring-1 ring-blue-600'
+                            ? 'border-[#4a208e] bg-[#f8f4fc] text-[#4a208e] font-bold shadow-xs ring-1 ring-[#4a208e]'
                             : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                         }`}
                       >
@@ -215,18 +211,18 @@ export default function App() {
                 </div>
 
                 {/* 3. Línea de Aluminio */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                <div className="bg-white rounded-3xl p-4 shadow-xs border border-purple-100">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-3">
-                    <ShieldCheck className="w-4 h-4 text-blue-600" /> 3. Línea de Aluminio (Perfilería)
+                    <ShieldCheck className="w-4 h-4 text-[#4a208e]" /> 3. Línea de Perfilería (Uruguay)
                   </label>
                   <div className="space-y-2">
                     {PRICING_CONFIG.lineas.map((linea) => (
                       <div
                         key={linea.id}
                         onClick={() => setTallerForm({ ...tallerForm, lineaId: linea.id })}
-                        className={`cursor-pointer p-3 rounded-xl border text-xs flex items-center justify-between transition-all ${
+                        className={`cursor-pointer p-3 rounded-2xl border text-xs flex items-center justify-between transition-all ${
                           tallerForm.lineaId === linea.id
-                            ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600'
+                            ? 'border-[#4a208e] bg-[#f8f4fc] ring-1 ring-[#4a208e]'
                             : 'border-slate-200 hover:bg-slate-50'
                         }`}
                       >
@@ -234,7 +230,7 @@ export default function App() {
                           <div className="font-bold text-sm text-slate-900">{linea.nombre}</div>
                           <div className="text-[11px] text-slate-500">{linea.descripcion}</div>
                         </div>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-[#4a208e] border border-purple-200">
                           {linea.badge}
                         </span>
                       </div>
@@ -243,7 +239,7 @@ export default function App() {
                 </div>
 
                 {/* 4. Vidrio y Color */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="bg-white rounded-3xl p-4 shadow-xs border border-purple-100 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">
                       4. Vidrio
@@ -251,7 +247,7 @@ export default function App() {
                     <select
                       value={tallerForm.vidrioId}
                       onChange={(e) => setTallerForm({ ...tallerForm, vidrioId: e.target.value })}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#4a208e] focus:outline-none"
                     >
                       {PRICING_CONFIG.vidrios.map((v) => (
                         <option key={v.id} value={v.id}>
@@ -263,12 +259,12 @@ export default function App() {
 
                   <div>
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">
-                      5. Terminación / Color
+                      5. Color de Aluminio
                     </label>
                     <select
                       value={tallerForm.colorId}
                       onChange={(e) => setTallerForm({ ...tallerForm, colorId: e.target.value })}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#4a208e] focus:outline-none"
                     >
                       {PRICING_CONFIG.colores.map((c) => (
                         <option key={c.id} value={c.id}>
@@ -280,9 +276,9 @@ export default function App() {
                 </div>
 
                 {/* 5. Datos del Cliente */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                <div className="bg-white rounded-3xl p-4 shadow-xs border border-purple-100">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5 mb-3">
-                    <User className="w-4 h-4 text-blue-600" /> 6. Datos del Cliente para el WhatsApp
+                    <User className="w-4 h-4 text-[#4a208e]" /> 6. Destinatario para el WhatsApp
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
@@ -291,7 +287,7 @@ export default function App() {
                         type="text"
                         value={tallerForm.clienteNombre}
                         onChange={(e) => setTallerForm({ ...tallerForm, clienteNombre: e.target.value })}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-[#4a208e] focus:outline-none"
                         placeholder="Ej: Laura Rossi"
                       />
                     </div>
@@ -301,7 +297,7 @@ export default function App() {
                         type="text"
                         value={tallerForm.clienteTelefono}
                         onChange={(e) => setTallerForm({ ...tallerForm, clienteTelefono: e.target.value })}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-[#4a208e] focus:outline-none"
                         placeholder="Ej: 099123456"
                       />
                     </div>
@@ -311,45 +307,45 @@ export default function App() {
 
               {/* Columna Lateral: Resumen de Cotización y Botón de WhatsApp */}
               <div className="md:col-span-5 space-y-4">
-                <div className="bg-slate-900 text-white rounded-3xl p-5 shadow-lg border border-slate-800 sticky top-20">
+                <div className="bg-gradient-to-b from-[#2c1256] to-[#1a0836] text-white rounded-3xl p-5 shadow-xl border border-purple-900/40 sticky top-20">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1">
+                    <span className="text-xs font-extrabold text-[#cb69fc] uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5" /> Cotización Instantánea
                     </span>
-                    <span className="text-[11px] bg-slate-800 text-slate-300 px-2.5 py-0.5 rounded-full border border-slate-700">
-                      Uruguay $ UYU / USD
+                    <span className="text-[10px] bg-purple-900/60 text-purple-200 px-2.5 py-0.5 rounded-full border border-purple-400/20 font-semibold">
+                      $ UYU / USD
                     </span>
                   </div>
 
                   {cotizacion ? (
                     <div>
                       {/* Gran Precio Final */}
-                      <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700/80 text-center mb-4">
-                        <span className="text-xs text-slate-400 block mb-1 font-medium">Inversión Final Sugerida</span>
-                        <div className="text-3xl font-extrabold text-white tracking-tight">
-                          $ {cotizacion.precioFinalUYU.toLocaleString('es-UY')} <span className="text-sm font-semibold text-blue-400">UYU</span>
+                      <div className="bg-purple-950/60 rounded-2xl p-4 border border-purple-400/20 text-center mb-4 backdrop-blur-sm">
+                        <span className="text-xs text-purple-200 block mb-1 font-medium">Inversión Final Sugerida</span>
+                        <div className="text-3xl font-black text-white tracking-tight">
+                          $ {cotizacion.precioFinalUYU.toLocaleString('es-UY')} <span className="text-sm font-semibold text-[#cb69fc]">UYU</span>
                         </div>
-                        <div className="text-xs text-slate-400 mt-1">
+                        <div className="text-xs text-purple-300 mt-1">
                           ≈ USD {cotizacion.precioFinalUSD} (TC ref. {PRICING_CONFIG.tipoCambioUSD})
                         </div>
                       </div>
 
                       {/* Desglose Técnico Estimado */}
-                      <div className="space-y-2 text-xs text-slate-300 border-t border-slate-800 pt-3 mb-5">
+                      <div className="space-y-2 text-xs text-purple-100 border-t border-purple-800/40 pt-3 mb-5">
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Metros de perfil estimado:</span>
+                          <span className="text-purple-300">Perfilería estimada:</span>
                           <span className="font-semibold">{cotizacion.metrosLinealesPerfiles} m lineales</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Superficie de vidrio:</span>
+                          <span className="text-purple-300">Superficie de vidrio:</span>
                           <span className="font-semibold">{cotizacion.superficieM2} m²</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Costo materiales estimado:</span>
+                          <span className="text-purple-300">Materiales estimados:</span>
                           <span className="font-semibold">$ {cotizacion.desglose.costoMateriales.toLocaleString('es-UY')}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Mano de obra y taller:</span>
+                          <span className="text-purple-300">Mano de obra y taller:</span>
                           <span className="font-semibold">$ {cotizacion.desglose.manoDeObra.toLocaleString('es-UY')}</span>
                         </div>
                       </div>
@@ -363,24 +359,15 @@ export default function App() {
                         <span>Enviar Presupuesto por WhatsApp</span>
                       </button>
 
-                      <p className="text-[11px] text-slate-400 text-center mt-2.5">
+                      <p className="text-[11px] text-purple-300 text-center mt-2.5">
                         Abre WhatsApp con el mensaje estructurado listo para enviar al cliente.
                       </p>
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-slate-400 text-xs">
+                    <div className="text-center py-8 text-purple-300 text-xs">
                       Ingresá ancho y alto para ver la cotización al instante.
                     </div>
                   )}
-                </div>
-
-                {/* Tarjeta de valor para AGN-JOV */}
-                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-3.5 text-xs text-blue-900 flex items-start gap-2.5">
-                  <div className="bg-blue-600 text-white rounded-lg p-1.5 font-bold text-[10px]">CRM</div>
-                  <div>
-                    <span className="font-bold block">Conexión con n8n lista</span>
-                    Esta cotización puede guardarse automáticamente en tu base de datos de clientes para hacer seguimientos y remarketing por email o WhatsApp.
-                  </div>
                 </div>
               </div>
             </div>
@@ -393,11 +380,11 @@ export default function App() {
         {activeTab === 'filtro_cliente' && (
           <div className="max-w-xl mx-auto space-y-4">
             {/* Banner de explicación */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center">
-              <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            <div className="bg-white rounded-3xl p-6 border border-purple-100 shadow-xs text-center">
+              <span className="bg-[#f8f4fc] text-[#4a208e] border border-purple-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block">
                 Filtro Anti-Curiosos
               </span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-2">
+              <h2 className="text-xl font-extrabold text-slate-900 mt-2.5">
                 Solicitá tu Presupuesto de Aberturas
               </h2>
               <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
@@ -424,17 +411,16 @@ export default function App() {
                       calidadVidrio: 'dvh',
                       nombre: '',
                       telefono: '',
-                      zona: 'Montevideo / Canelones',
-                      comentarios: ''
+                      zona: 'Montevideo / Canelones'
                     });
                   }}
-                  className="bg-slate-900 text-white text-xs font-bold py-2.5 px-5 rounded-xl inline-flex items-center gap-1.5 hover:bg-slate-800"
+                  className="bg-[#4a208e] hover:bg-[#5a207e] text-white text-xs font-bold py-2.5 px-5 rounded-xl inline-flex items-center gap-1.5 transition-all"
                 >
                   <RotateCcw className="w-3.5 h-3.5" /> Enviar otra solicitud
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleEnviarFiltroCliente} className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-5">
+              <form onSubmit={handleEnviarFiltroCliente} className="bg-white rounded-3xl p-6 border border-purple-100 shadow-xs space-y-5">
                 {/* 1. Selección de Tipología */}
                 <div>
                   <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">
@@ -448,7 +434,7 @@ export default function App() {
                         onClick={() => setClienteForm({ ...clienteForm, tipologiaId: t.id })}
                         className={`p-3 rounded-2xl border text-left text-xs transition-all ${
                           clienteForm.tipologiaId === t.id
-                            ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600 text-blue-900 font-bold'
+                            ? 'border-[#4a208e] bg-[#f8f4fc] ring-1 ring-[#4a208e] text-[#4a208e] font-bold'
                             : 'border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                       >
@@ -471,7 +457,7 @@ export default function App() {
                         required
                         value={clienteForm.anchoAprox}
                         onChange={(e) => setClienteForm({ ...clienteForm, anchoAprox: e.target.value })}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#4a208e]"
                       />
                     </div>
                     <div>
@@ -481,7 +467,7 @@ export default function App() {
                         required
                         value={clienteForm.altoAprox}
                         onChange={(e) => setClienteForm({ ...clienteForm, altoAprox: e.target.value })}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#4a208e]"
                       />
                     </div>
                   </div>
@@ -501,7 +487,7 @@ export default function App() {
                       onClick={() => setClienteForm({ ...clienteForm, calidadVidrio: 'simple_4mm' })}
                       className={`p-3 rounded-2xl border text-left text-xs transition-all ${
                         clienteForm.calidadVidrio === 'simple_4mm'
-                          ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600 font-bold text-blue-900'
+                          ? 'border-[#4a208e] bg-[#f8f4fc] ring-1 ring-[#4a208e] font-bold text-[#4a208e]'
                           : 'border-slate-200 text-slate-700'
                       }`}
                     >
@@ -514,21 +500,21 @@ export default function App() {
                       onClick={() => setClienteForm({ ...clienteForm, calidadVidrio: 'dvh' })}
                       className={`p-3 rounded-2xl border text-left text-xs transition-all ${
                         clienteForm.calidadVidrio === 'dvh'
-                          ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600 font-bold text-blue-900'
+                          ? 'border-[#4a208e] bg-[#f8f4fc] ring-1 ring-[#4a208e] font-bold text-[#4a208e]'
                           : 'border-slate-200 text-slate-700'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span>DVH Térmico / Acústico</span>
-                        <span className="text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-bold">Recomendado</span>
+                        <span className="text-[9px] bg-purple-100 text-[#4a208e] px-1.5 py-0.2 rounded font-bold">Recomendado</span>
                       </div>
                       <div className="text-[10px] text-slate-500 font-normal">Aísla el frío, calor y ruidos de la calle</div>
                     </button>
                   </div>
                 </div>
 
-                {/* 4. Datos del Cliente (Filtro para evitar spam) */}
-                <div className="border-t border-slate-200 pt-4 space-y-3">
+                {/* 4. Datos del Cliente */}
+                <div className="border-t border-slate-100 pt-4 space-y-3">
                   <label className="block text-xs font-bold text-slate-900 uppercase tracking-wider">
                     4. ¿A dónde te enviamos el presupuesto?
                   </label>
@@ -541,7 +527,7 @@ export default function App() {
                       value={clienteForm.nombre}
                       onChange={(e) => setClienteForm({ ...clienteForm, nombre: e.target.value })}
                       placeholder="Ej: Martín Silva"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4a208e]"
                     />
                   </div>
 
@@ -554,7 +540,7 @@ export default function App() {
                         value={clienteForm.telefono}
                         onChange={(e) => setClienteForm({ ...clienteForm, telefono: e.target.value })}
                         placeholder="Ej: 099 123 456"
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4a208e]"
                       />
                     </div>
                     <div>
@@ -564,7 +550,7 @@ export default function App() {
                         value={clienteForm.zona}
                         onChange={(e) => setClienteForm({ ...clienteForm, zona: e.target.value })}
                         placeholder="Ej: Pocitos, Montevideo"
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4a208e]"
                       />
                     </div>
                   </div>
@@ -572,7 +558,7 @@ export default function App() {
 
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 px-4 rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 text-sm transition-all"
+                  className="w-full bg-gradient-to-r from-[#4a208e] to-[#5a207e] hover:opacity-95 text-white font-extrabold py-3.5 px-4 rounded-2xl shadow-lg shadow-purple-900/20 flex items-center justify-center gap-2 text-sm transition-all"
                 >
                   <span>Solicitar Presupuesto por WhatsApp</span>
                   <ArrowRight className="w-4 h-4" />
@@ -584,9 +570,9 @@ export default function App() {
 
       </main>
 
-      {/* Footer Branding AGN-JOV */}
-      <footer className="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
-        Desarrollado y potenciado por <strong className="text-slate-800">AGN-JOV</strong> • Empresa <strong className="text-slate-800">AGN</strong>
+      {/* Footer Branding Grupo AGN */}
+      <footer className="bg-white border-t border-purple-100 py-3 text-center text-xs text-slate-500">
+        Potenciado por <strong className="text-[#4a208e]">Grupo AGN</strong> • Marketing Digital & Soluciones Tecnológicas
       </footer>
     </div>
   );
