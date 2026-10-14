@@ -20,6 +20,9 @@ export default function App() {
   // Pestaña activa: 'taller' o 'filtro_cliente'
   const [activeTab, setActiveTab] = useState('taller');
 
+  // Selector multimoneda global
+  const [moneda, setMoneda] = useState('USD'); // 'USD' | 'UYU' | 'ARS' | 'LOCAL'
+
   // Estado del Formulario Modo Taller (Carpintero)
   const [tallerForm, setTallerForm] = useState({
     anchoCm: 150,
@@ -66,6 +69,10 @@ export default function App() {
       telLimpio = '598' + telLimpio;
     }
 
+    const textoPrecio = moneda === 'USD' 
+      ? `*USD ${cotizacion.precioFinalUSD}* (o aprox. $ ${cotizacion.precioFinalUYU.toLocaleString('es-UY')} UYU)`
+      : `*$ ${cotizacion.precioFinalUYU.toLocaleString('es-UY')} UYU* (o aprox. USD ${cotizacion.precioFinalUSD})`;
+
     const mensaje = `Hola ${tallerForm.clienteNombre || 'estimado/a'}! 👋\n` +
       `Te paso el presupuesto detallado de tu abertura:\n\n` +
       `🪟 *Tipología:* ${cotizacion.tipologia.nombre}\n` +
@@ -74,7 +81,7 @@ export default function App() {
       `🛡️ *Vidrio:* ${cotizacion.vidrio.nombre}\n` +
       `🎨 *Color:* ${cotizacion.color.nombre}\n` +
       (tallerForm.incluyeColocacion ? `✅ *Incluye:* Rectificación de medidas en obra y colocación.\n\n` : `\n`) +
-      `💰 *Total:* *$ ${cotizacion.precioFinalUYU.toLocaleString('es-UY')} UYU* (o aprox. USD ${cotizacion.precioFinalUSD})\n\n` +
+      `💰 *Total:* ${textoPrecio}\n\n` +
       `⏱️ *Plazo de fabricación:* 10 a 15 días hábiles.\n` +
       `📋 *Validez del presupuesto:* 15 días corridos.\n\n` +
       `¿Querés que coordinemos una visita para rectificar medidas o tenés alguna consulta?`;
@@ -338,22 +345,55 @@ export default function App() {
                     <span className="text-xs font-extrabold text-[#cb69fc] uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5" /> Cotización Instantánea
                     </span>
-                    <span className="text-[10px] bg-purple-900/60 text-purple-200 px-2.5 py-0.5 rounded-full border border-purple-400/20 font-semibold">
-                      $ UYU / USD
-                    </span>
+                    
+                    {/* Selector Multimoneda */}
+                    <div className="bg-[#1f0a40] p-0.5 rounded-xl border border-purple-400/20 flex items-center text-[10px] font-bold">
+                      <button
+                        type="button"
+                        onClick={() => setMoneda('USD')}
+                        className={`px-2 py-0.5 rounded-lg transition-all ${
+                          moneda === 'USD' ? 'bg-[#e6007e] text-white shadow' : 'text-purple-300 hover:text-white'
+                        }`}
+                      >
+                        USD ($)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMoneda('LOCAL')}
+                        className={`px-2 py-0.5 rounded-lg transition-all ${
+                          moneda === 'LOCAL' ? 'bg-[#e6007e] text-white shadow' : 'text-purple-300 hover:text-white'
+                        }`}
+                      >
+                        Local ($)
+                      </button>
+                    </div>
                   </div>
 
                   {cotizacion ? (
                     <div>
-                      {/* Gran Precio Final */}
+                      {/* Gran Precio Final (Multimoneda) */}
                       <div className="bg-purple-950/60 rounded-2xl p-4 border border-purple-400/20 text-center mb-4 backdrop-blur-sm">
                         <span className="text-xs text-purple-200 block mb-1 font-medium">Inversión Final Sugerida</span>
-                        <div className="text-3xl font-black text-white tracking-tight">
-                          $ {cotizacion.precioFinalUYU.toLocaleString('es-UY')} <span className="text-sm font-semibold text-[#cb69fc]">UYU</span>
-                        </div>
-                        <div className="text-xs text-purple-300 mt-1">
-                          ≈ USD {cotizacion.precioFinalUSD} (TC ref. {PRICING_CONFIG.tipoCambioUSD})
-                        </div>
+                        
+                        {moneda === 'USD' ? (
+                          <>
+                            <div className="text-3xl font-black text-white tracking-tight">
+                              USD {cotizacion.precioFinalUSD} <span className="text-sm font-semibold text-[#cb69fc]">Dólares</span>
+                            </div>
+                            <div className="text-xs text-purple-300 mt-1">
+                              ≈ $ {cotizacion.precioFinalUYU.toLocaleString('es-UY')} (Moneda Local / Ref.)
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-3xl font-black text-white tracking-tight">
+                              $ {cotizacion.precioFinalUYU.toLocaleString('es-UY')} <span className="text-sm font-semibold text-[#cb69fc]">Local</span>
+                            </div>
+                            <div className="text-xs text-purple-300 mt-1">
+                              ≈ USD {cotizacion.precioFinalUSD} (Dólares)
+                            </div>
+                          </>
+                        )}
                       </div>
 
                       {/* Desglose Técnico Estimado */}
@@ -368,11 +408,19 @@ export default function App() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-purple-300">Materiales estimados:</span>
-                          <span className="font-semibold">$ {cotizacion.desglose.costoMateriales.toLocaleString('es-UY')}</span>
+                          <span className="font-semibold">
+                            {moneda === 'USD' 
+                              ? `USD ${Math.round(cotizacion.desglose.costoMateriales / PRICING_CONFIG.tipoCambioUSD)}`
+                              : `$ ${cotizacion.desglose.costoMateriales.toLocaleString('es-UY')}`}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-purple-300">Mano de obra y taller:</span>
-                          <span className="font-semibold">$ {cotizacion.desglose.manoDeObra.toLocaleString('es-UY')}</span>
+                          <span className="font-semibold">
+                            {moneda === 'USD'
+                              ? `USD ${Math.round(cotizacion.desglose.manoDeObra / PRICING_CONFIG.tipoCambioUSD)}`
+                              : `$ ${cotizacion.desglose.manoDeObra.toLocaleString('es-UY')}`}
+                          </span>
                         </div>
                       </div>
 

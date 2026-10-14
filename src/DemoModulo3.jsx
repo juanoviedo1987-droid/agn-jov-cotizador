@@ -83,6 +83,11 @@ export default function DemoModulo3() {
     window.open(`https://wa.me/598${cot.telefono.replace(/\D/g, '')}?text=${encodeURIComponent(mensaje)}`, '_blank');
   };
 
+  // Selector de moneda en Módulo 3
+  const [monedaCRM, setMonedaCRM] = useState('USD');
+
+  const totalCotizadoUSD = cotizaciones.reduce((acc, c) => acc + c.montoUSD, 0);
+  const totalGanadoUSD = cotizaciones.filter(c => c.estado === 'Ganado').reduce((acc, c) => acc + c.montoUSD, 0);
   const totalCotizadoUYU = cotizaciones.reduce((acc, c) => acc + c.montoUYU, 0);
   const totalGanadoUYU = cotizaciones.filter(c => c.estado === 'Ganado').reduce((acc, c) => acc + c.montoUYU, 0);
   const pendientesCount = cotizaciones.filter(c => c.estado === 'Pendiente').length;
@@ -91,7 +96,7 @@ export default function DemoModulo3() {
     <div className="max-w-4xl mx-auto space-y-6">
       
       {/* Banner Explicativo del Módulo 3 */}
-      <div className="bg-gradient-to-r from-indigo-950 via-indigo-900 to-[#2c1256] rounded-3xl p-5 text-white shadow-sm flex items-center justify-between">
+      <div className="bg-gradient-to-r from-indigo-950 via-indigo-900 to-[#2c1256] rounded-3xl p-5 text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <span className="text-[10px] font-extrabold uppercase tracking-wider bg-indigo-500/30 text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-400/20 inline-block mb-1">
             Demo Interactiva • Módulo 3
@@ -101,8 +106,27 @@ export default function DemoModulo3() {
             Cada presupuesto enviado se guarda solo. El sistema te avisa a las 48h para recordar contactar al cliente y cerrar la venta.
           </p>
         </div>
-        <div className="hidden sm:block p-3 bg-white/10 rounded-2xl">
-          <BarChart3 className="w-8 h-8 text-indigo-300" />
+
+        {/* Toggle Multimoneda */}
+        <div className="bg-indigo-950 p-1 rounded-xl border border-indigo-400/30 flex items-center text-xs font-bold shrink-0">
+          <button
+            type="button"
+            onClick={() => setMonedaCRM('USD')}
+            className={`px-3 py-1 rounded-lg transition-all ${
+              monedaCRM === 'USD' ? 'bg-[#e6007e] text-white shadow' : 'text-indigo-200 hover:text-white'
+            }`}
+          >
+            USD ($)
+          </button>
+          <button
+            type="button"
+            onClick={() => setMonedaCRM('LOCAL')}
+            className={`px-3 py-1 rounded-lg transition-all ${
+              monedaCRM === 'LOCAL' ? 'bg-[#e6007e] text-white shadow' : 'text-indigo-200 hover:text-white'
+            }`}
+          >
+            Moneda Local
+          </button>
         </div>
       </div>
 
@@ -111,15 +135,15 @@ export default function DemoModulo3() {
         <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs">
           <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Presupuestado</span>
           <div className="text-2xl font-black text-slate-900 mt-1">
-            $ {totalCotizadoUYU.toLocaleString('es-UY')} <span className="text-xs font-semibold text-slate-500">UYU</span>
+            {monedaCRM === 'USD' ? `USD ${totalCotizadoUSD.toLocaleString()}` : `$ ${totalCotizadoUYU.toLocaleString('es-UY')}`}
           </div>
-          <span className="text-[10px] text-slate-400">{cotizaciones.length} cotizaciones este mes</span>
+          <span className="text-[10px] text-slate-400">{cotizaciones.length} presupuestos este mes</span>
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-emerald-200 shadow-xs bg-emerald-50/20">
           <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block">Ventas Cerradas / Ganadas</span>
           <div className="text-2xl font-black text-emerald-700 mt-1">
-            $ {totalGanadoUYU.toLocaleString('es-UY')} <span className="text-xs font-semibold text-emerald-600">UYU</span>
+            {monedaCRM === 'USD' ? `USD ${totalGanadoUSD.toLocaleString()}` : `$ ${totalGanadoUYU.toLocaleString('es-UY')}`}
           </div>
           <span className="text-[10px] text-emerald-600">Trabajos con seña confirmada</span>
         </div>
@@ -182,8 +206,17 @@ export default function DemoModulo3() {
                   </td>
 
                   <td className="p-3">
-                    <div className="font-bold text-slate-900">$ {cot.montoUYU.toLocaleString('es-UY')}</div>
-                    <div className="text-[10px] text-slate-400">≈ USD {cot.montoUSD}</div>
+                    {monedaCRM === 'USD' ? (
+                      <>
+                        <div className="font-bold text-slate-900">USD {cot.montoUSD}</div>
+                        <div className="text-[10px] text-slate-400">≈ $ {cot.montoUYU.toLocaleString('es-UY')}</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="font-bold text-slate-900">$ {cot.montoUYU.toLocaleString('es-UY')}</div>
+                        <div className="text-[10px] text-slate-400">≈ USD {cot.montoUSD}</div>
+                      </>
+                    )}
                   </td>
 
                   <td className="p-3">
