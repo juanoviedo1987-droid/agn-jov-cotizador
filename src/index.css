@@ -1,3 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-agn-dark: #2c1256;
+  --color-agn-purple: #4a208e;
+  --color-agn-violet: #5a207e;
+  --color-agn-lightViolet: #7b3dbd;
+  --color-agn-magenta: #e6007e;
+  --color-agn-lilac: #cb69fc;
+  --color-agn-soft: #f8f4fc;
+}
+
 html, body, #root {
   width: 100%;
   min-height: 100vh;
