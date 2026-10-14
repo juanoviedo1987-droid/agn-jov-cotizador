@@ -702,8 +702,15 @@ export default function App() {
       </a>
 
       {/* Footer Corporativo */}
-      <footer className="bg-white border-t border-purple-100 py-4 text-center text-xs text-slate-500">
-        Potenciado por <strong className="text-[#4a208e]">Grupo AGN</strong> • Soluciones Tecnológicas & Marketing Digital para PyMEs
+      <footer className="bg-white border-t border-purple-100 py-4 text-center text-xs text-slate-500 space-y-1">
+        <div>
+          Potenciado por <strong className="text-[#4a208e]">Grupo AGN</strong> • Soluciones Tecnológicas & Marketing Digital para PyMEs
+        </div>
+        <div>
+          <a href="procedimientos.html" className="text-purple-600 hover:text-purple-800 underline font-semibold text-[11px]">
+            Manual Interno de Procedimientos & Cuestionario (SOP) →
+          </a>
+        </div>
       </footer>
 
     </div>
