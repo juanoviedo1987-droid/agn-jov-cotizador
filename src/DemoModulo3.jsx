@@ -1,250 +1,294 @@
 import React, { useState } from 'react';
 import { 
   Bell, 
-  Send 
+  Send,
+  CheckCircle2,
+  DollarSign
 } from 'lucide-react';
 
 export default function DemoModulo3() {
-  // Lista simulada interactiva de cotizaciones guardadas automáticamente
+  // Moneda activa en el CRM
+  const [monedaCRM, setMonedaCRM] = useState('USD'); // 'USD' | 'UYU'
+
+  // Lista de cotizaciones registradas automáticamente (Multi-rubro representativo)
   const [cotizaciones, setCotizaciones] = useState([
     {
       id: 1,
-      fecha: '14/10/2026',
+      fecha: 'Hace 48 horas',
       cliente: 'Carlos Méndez',
       telefono: '099123456',
-      zona: 'Pocitos, MVD',
-      trabajo: 'Corrediza 2H Probba DVH (150x120)',
-      montoUYU: 13200,
+      zona: 'Pocitos',
+      rubro: 'Aberturas',
+      trabajo: 'Ventana Corrediza 2H Probba DVH (150x120)',
       montoUSD: 326,
+      montoUYU: 13200,
       estado: 'Pendiente',
-      horasTranscurridas: 48,
-      alertaActiva: true
+      alerta48h: true
     },
     {
       id: 2,
-      fecha: '13/10/2026',
+      fecha: 'Hace 52 horas',
       cliente: 'Laura Rossi',
       telefono: '098456789',
-      zona: 'Carrasco, MVD',
-      trabajo: 'Paño Fijo Serie 25 Simple (200x150)',
-      montoUYU: 9800,
-      montoUSD: 242,
-      estado: 'Ganado',
-      horasTranscurridas: 72,
-      alertaActiva: false
+      zona: 'Carrasco',
+      rubro: 'Muebles',
+      trabajo: 'Bajo Mesada Cocina en Melamina (160x85)',
+      montoUSD: 410,
+      montoUYU: 16600,
+      estado: 'Pendiente',
+      alerta48h: true
     },
     {
       id: 3,
-      fecha: '12/10/2026',
+      fecha: 'Ayer',
       cliente: 'Martín Silva',
       telefono: '091223344',
       zona: 'Canelones',
-      trabajo: 'Puerta de Abrir Gala DVH (90x210)',
-      montoUYU: 24500,
-      montoUSD: 605,
-      estado: 'Pendiente',
-      horasTranscurridas: 52,
-      alertaActiva: true
+      rubro: 'Herrería',
+      trabajo: 'Portón Corredizo Reforzado (300x200)',
+      montoUSD: 860,
+      montoUYU: 34800,
+      estado: 'Ganado',
+      alerta48h: false
     },
     {
       id: 4,
-      fecha: '10/10/2026',
+      fecha: 'Hace 4 días',
       cliente: 'Arq. Gonzalo Pena',
       telefono: '099778899',
       zona: 'Punta del Este',
-      trabajo: '3 Ventanas Batientes Serie 25 (100x100)',
-      montoUYU: 32000,
-      montoUSD: 790,
-      estado: 'Perdido',
-      horasTranscurridas: 96,
-      alertaActiva: false
+      rubro: 'Climatización',
+      trabajo: 'Instalación Split 3 Puntos + Tablero',
+      montoUSD: 480,
+      montoUYU: 19440,
+      estado: 'Archivado',
+      alerta48h: false
     }
   ]);
 
   const cambiarEstado = (id, nuevoEstado) => {
-    setCotizaciones(cotizaciones.map(c => 
-      c.id === id ? { ...c, estado: nuevoEstado, alertaActiva: nuevoEstado === 'Pendiente' ? c.alertaActiva : false } : c
+    setCotizaciones(prev => prev.map(c => 
+      c.id === id 
+        ? { ...c, estado: nuevoEstado, alerta48h: nuevoEstado === 'Pendiente' ? c.alerta48h : false } 
+        : c
     ));
   };
 
-  const enviarSeguimiento = (cot) => {
-    const mensaje = `Hola ${cot.cliente}! 👋 Te escribo desde el taller para consultarte si pudiste revisar el presupuesto de ${cot.trabajo}. ¿Te gustaría que coordinemos una visita a obra para rectificar medidas o tenés alguna consulta técnica?`;
-    window.open(`https://wa.me/598${cot.telefono.replace(/\D/g, '')}?text=${encodeURIComponent(mensaje)}`, '_blank');
+  const enviarSeguimientoWhatsApp = (cot) => {
+    const mensaje = `Hola ${cot.cliente}! 👋 Te escribo del taller para consultarte si pudiste revisar el presupuesto de ${cot.trabajo}. ¿Querés que coordinemos una visita técnica o tenés alguna consulta antes de avanzar?`;
+    const telLimpio = cot.telefono.replace(/\D/g, '');
+    window.open(`https://wa.me/598${telLimpio}?text=${encodeURIComponent(mensaje)}`, '_blank');
   };
 
-  // Selector de moneda en Módulo 3
-  const [monedaCRM, setMonedaCRM] = useState('USD');
-
-  const totalCotizadoUSD = cotizaciones.reduce((acc, c) => acc + c.montoUSD, 0);
-  const totalGanadoUSD = cotizaciones.filter(c => c.estado === 'Ganado').reduce((acc, c) => acc + c.montoUSD, 0);
-  const totalCotizadoUYU = cotizaciones.reduce((acc, c) => acc + c.montoUYU, 0);
-  const totalGanadoUYU = cotizaciones.filter(c => c.estado === 'Ganado').reduce((acc, c) => acc + c.montoUYU, 0);
-  const pendientesCount = cotizaciones.filter(c => c.estado === 'Pendiente').length;
+  const totalUSD = cotizaciones.reduce((acc, c) => acc + c.montoUSD, 0);
+  const totalUYU = cotizaciones.reduce((acc, c) => acc + c.montoUYU, 0);
+  const ganadosUSD = cotizaciones.filter(c => c.estado === 'Ganado').reduce((acc, c) => acc + c.montoUSD, 0);
+  const ganadosUYU = cotizaciones.filter(c => c.estado === 'Ganado').reduce((acc, c) => acc + c.montoUYU, 0);
+  const alertasPendientes = cotizaciones.filter(c => c.alerta48h && c.estado === 'Pendiente').length;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-5 antialiased">
       
-      {/* Banner Explicativo del Módulo 3 */}
-      <div className="bg-gradient-to-r from-indigo-950 via-indigo-900 to-[#2c1256] rounded-3xl p-5 text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* Header / Explicación del Módulo 3 */}
+      <div className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] rounded-3xl p-5 text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <span className="text-[10px] font-extrabold uppercase tracking-wider bg-indigo-500/30 text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-400/20 inline-block mb-1">
-            Demo Interactiva • Módulo 3
+          <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#e6007e] text-white px-2.5 py-0.5 rounded-full inline-block mb-1 shadow-xs">
+            Módulo 3 • Historial & Mini CRM
           </span>
-          <h2 className="text-xl font-bold">Historial de Cotizaciones & Alertas de Seguimiento</h2>
-          <p className="text-xs text-indigo-200 mt-0.5">
-            Cada presupuesto enviado se guarda solo. El sistema te avisa a las 48h para recordar contactar al cliente y cerrar la venta.
+          <h2 className="text-xl font-bold">Seguimiento Automático de Presupuestos</h2>
+          <p className="text-xs text-purple-200 mt-0.5 max-w-xl">
+            Cada presupuesto enviado se registra solo en tu planilla en la nube. Si el cliente no responde a las 48h, te avisa para volver a contactarlo con 1 toque.
           </p>
         </div>
 
-        {/* Toggle Multimoneda */}
-        <div className="bg-indigo-950 p-1 rounded-xl border border-indigo-400/30 flex items-center text-xs font-bold shrink-0">
+        {/* Selector de Moneda Rápido */}
+        <div className="bg-purple-950/80 p-1 rounded-xl border border-purple-400/20 flex items-center text-xs font-bold shrink-0">
           <button
             type="button"
             onClick={() => setMonedaCRM('USD')}
             className={`px-3 py-1 rounded-lg transition-all ${
-              monedaCRM === 'USD' ? 'bg-[#e6007e] text-white shadow' : 'text-indigo-200 hover:text-white'
+              monedaCRM === 'USD' ? 'bg-[#e6007e] text-white shadow' : 'text-purple-200 hover:text-white'
             }`}
           >
             USD ($)
           </button>
           <button
             type="button"
-            onClick={() => setMonedaCRM('LOCAL')}
+            onClick={() => setMonedaCRM('UYU')}
             className={`px-3 py-1 rounded-lg transition-all ${
-              monedaCRM === 'LOCAL' ? 'bg-[#e6007e] text-white shadow' : 'text-indigo-200 hover:text-white'
+              monedaCRM === 'UYU' ? 'bg-[#e6007e] text-white shadow' : 'text-purple-200 hover:text-white'
             }`}
           >
-            Moneda Local
+            UYU ($)
           </button>
         </div>
       </div>
 
-      {/* Métricas KPI Simples de Facturación */}
+      {/* 3 Métricas Claras y Directas (Sin sobrecarga) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs">
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Presupuestado</span>
-          <div className="text-2xl font-black text-slate-900 mt-1">
-            {monedaCRM === 'USD' ? `USD ${totalCotizadoUSD.toLocaleString()}` : `$ ${totalCotizadoUYU.toLocaleString('es-UY')}`}
+        <div className="bg-white rounded-2xl p-4 border border-purple-100 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Presupuestado</span>
+            <DollarSign className="w-4 h-4 text-[#4a208e]" />
           </div>
-          <span className="text-[10px] text-slate-400">{cotizaciones.length} presupuestos este mes</span>
+          <div className="text-2xl font-black text-slate-900 mt-1">
+            {monedaCRM === 'USD' ? `USD ${totalUSD.toLocaleString()}` : `$ ${totalUYU.toLocaleString('es-UY')}`}
+          </div>
+          <span className="text-[10px] text-slate-400 font-medium">{cotizaciones.length} cotizaciones este mes</span>
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-emerald-200 shadow-xs bg-emerald-50/20">
-          <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block">Ventas Cerradas / Ganadas</span>
-          <div className="text-2xl font-black text-emerald-700 mt-1">
-            {monedaCRM === 'USD' ? `USD ${totalGanadoUSD.toLocaleString()}` : `$ ${totalGanadoUYU.toLocaleString('es-UY')}`}
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">Ventas Confirmadas</span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           </div>
-          <span className="text-[10px] text-emerald-600">Trabajos con seña confirmada</span>
+          <div className="text-2xl font-black text-emerald-700 mt-1">
+            {monedaCRM === 'USD' ? `USD ${ganadosUSD.toLocaleString()}` : `$ ${ganadosUYU.toLocaleString('es-UY')}`}
+          </div>
+          <span className="text-[10px] text-emerald-600 font-medium">Con seña confirmada</span>
         </div>
 
         <div className="bg-white rounded-2xl p-4 border border-amber-200 shadow-xs bg-amber-50/20">
-          <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wider block">Seguimientos Pendientes</span>
-          <div className="text-2xl font-black text-amber-700 mt-1">
-            {pendientesCount} clientes
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider">Alertas 48h Activas</span>
+            <Bell className="w-4 h-4 text-amber-600 animate-bounce" />
           </div>
-          <span className="text-[10px] text-amber-600">Alertas activas para volver a contactar</span>
+          <div className="text-2xl font-black text-amber-700 mt-1">
+            {alertasPendientes} clientes
+          </div>
+          <span className="text-[10px] text-amber-600 font-medium">Recordatorio listo para enviar</span>
         </div>
       </div>
 
-      {/* Alerta de Seguimiento Activa (n8n Engine) */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs flex items-start gap-3">
-        <div className="p-2 bg-amber-500 text-white rounded-xl shrink-0">
-          <Bell className="w-4 h-4 animate-bounce" />
-        </div>
-        <div className="space-y-1">
-          <span className="font-extrabold text-amber-900 block text-sm">
-            🔔 Alerta Automática de n8n: 2 clientes llevan más de 48h sin responder
+      {/* Banner de Acción Rápida */}
+      {alertasPendientes > 0 && (
+        <div className="bg-amber-50 border border-amber-300/80 rounded-2xl p-3.5 flex items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="p-1.5 bg-amber-500 text-white rounded-lg font-bold shrink-0">🔔</span>
+            <span className="text-amber-950 font-semibold">
+              Tenés <strong>{alertasPendientes} clientes</strong> que recibieron presupuesto hace 2 días y no respondieron.
+            </span>
+          </div>
+          <span className="text-[11px] font-extrabold text-amber-800 bg-amber-100 px-2 py-1 rounded-md shrink-0">
+            Cerrá más ventas
           </span>
-          <p className="text-amber-800">
-            El sistema detectó presupuestos enviados hace más de 2 días. Tocá el botón verde al lado de cada cliente para enviarle el recordatorio suave por WhatsApp con 1 toque.
-          </p>
         </div>
+      )}
+
+      {/* Feed de Tarjetas Táctiles Mobile-First (Sin scroll horizontal) */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="font-extrabold text-sm text-slate-900">Historial de Clientes</h3>
+          <span className="text-[11px] text-slate-500">Sincronizado en la nube</span>
+        </div>
+
+        {cotizaciones.map((cot) => (
+          <div 
+            key={cot.id}
+            className={`bg-white rounded-2xl p-4 border transition-all shadow-xs flex flex-col gap-3 ${
+              cot.alerta48h && cot.estado === 'Pendiente'
+                ? 'border-amber-300 ring-2 ring-amber-200/50'
+                : 'border-slate-200'
+            }`}
+          >
+            {/* Fila superior: Cliente, tiempo y monto */}
+            <div className="flex items-start justify-between gap-2">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-bold text-slate-900 text-sm">{cot.cliente}</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-[#4a208e]">
+                    {cot.rubro}
+                  </span>
+                  {cot.alerta48h && cot.estado === 'Pendiente' && (
+                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 animate-pulse">
+                      🔔 Alerta 48h
+                    </span>
+                  )}
+                </div>
+                <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
+                  <span>{cot.telefono}</span>
+                  <span>•</span>
+                  <span>{cot.zona}</span>
+                  <span>•</span>
+                  <span className="text-slate-400">{cot.fecha}</span>
+                </div>
+              </div>
+
+              {/* Monto destacado */}
+              <div className="text-right shrink-0">
+                <div className="font-black text-base text-slate-900">
+                  {monedaCRM === 'USD' ? `USD ${cot.montoUSD}` : `$ ${cot.montoUYU.toLocaleString('es-UY')}`}
+                </div>
+                <div className="text-[10px] text-slate-400">
+                  {monedaCRM === 'USD' ? `≈ $ ${cot.montoUYU.toLocaleString('es-UY')}` : `≈ USD ${cot.montoUSD}`}
+                </div>
+              </div>
+            </div>
+
+            {/* Fila media: Detalle del trabajo */}
+            <div className="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-100 font-medium">
+              {cot.trabajo}
+            </div>
+
+            {/* Fila inferior: Estado de 1 toque y botón de WhatsApp */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-1 border-t border-slate-100">
+              
+              {/* Selector de estado simple con 3 botones tipo pill */}
+              <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+                <button
+                  type="button"
+                  onClick={() => cambiarEstado(cot.id, 'Pendiente')}
+                  className={`flex-1 sm:flex-initial text-[11px] font-bold px-2.5 py-1 rounded-lg transition-all ${
+                    cot.estado === 'Pendiente'
+                      ? 'bg-amber-400 text-amber-950 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🟡 Pendiente
+                </button>
+                <button
+                  type="button"
+                  onClick={() => cambiarEstado(cot.id, 'Ganado')}
+                  className={`flex-1 sm:flex-initial text-[11px] font-bold px-2.5 py-1 rounded-lg transition-all ${
+                    cot.estado === 'Ganado'
+                      ? 'bg-emerald-500 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  🟢 Señado
+                </button>
+                <button
+                  type="button"
+                  onClick={() => cambiarEstado(cot.id, 'Archivado')}
+                  className={`flex-1 sm:flex-initial text-[11px] font-bold px-2.5 py-1 rounded-lg transition-all ${
+                    cot.estado === 'Archivado'
+                      ? 'bg-slate-400 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  ⚪ Archivado
+                </button>
+              </div>
+
+              {/* Botón de Seguimiento WhatsApp */}
+              {cot.estado === 'Pendiente' && (
+                <button
+                  type="button"
+                  onClick={() => enviarSeguimientoWhatsApp(cot)}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Enviar Recordatorio 48h</span>
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Tabla Visual de Cotizaciones */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="font-black text-sm text-slate-900">Registro Automático de Presupuestos</h3>
-          <span className="text-[11px] text-slate-500">Sincronizado con Google Sheets en la nube</span>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
-              <tr>
-                <th className="p-3">Cliente / Teléfono</th>
-                <th className="p-3">Abertura Cotizada</th>
-                <th className="p-3">Total</th>
-                <th className="p-3">Estado</th>
-                <th className="p-3 text-right">Acción Rápida</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {cotizaciones.map((cot) => (
-                <tr key={cot.id} className="hover:bg-slate-50/70 transition-all">
-                  <td className="p-3">
-                    <div className="font-bold text-slate-900">{cot.cliente}</div>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1">
-                      <span>{cot.telefono}</span> • <span>{cot.zona}</span>
-                    </div>
-                  </td>
-
-                  <td className="p-3">
-                    <div className="text-slate-800 font-medium">{cot.trabajo}</div>
-                    <div className="text-[10px] text-slate-400">Enviado: {cot.fecha} ({cot.horasTranscurridas}h)</div>
-                  </td>
-
-                  <td className="p-3">
-                    {monedaCRM === 'USD' ? (
-                      <>
-                        <div className="font-bold text-slate-900">USD {cot.montoUSD}</div>
-                        <div className="text-[10px] text-slate-400">≈ $ {cot.montoUYU.toLocaleString('es-UY')}</div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="font-bold text-slate-900">$ {cot.montoUYU.toLocaleString('es-UY')}</div>
-                        <div className="text-[10px] text-slate-400">≈ USD {cot.montoUSD}</div>
-                      </>
-                    )}
-                  </td>
-
-                  <td className="p-3">
-                    <select
-                      value={cot.estado}
-                      onChange={(e) => cambiarEstado(cot.id, e.target.value)}
-                      className={`text-xs font-extrabold px-2 py-1 rounded-lg border focus:outline-none cursor-pointer ${
-                        cot.estado === 'Ganado'
-                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-                          : cot.estado === 'Perdido'
-                          ? 'bg-rose-100 text-rose-800 border-rose-300'
-                          : 'bg-amber-100 text-amber-800 border-amber-300'
-                      }`}
-                    >
-                      <option value="Pendiente">🟡 Pendiente</option>
-                      <option value="Ganado">🟢 Ganado (Seña)</option>
-                      <option value="Perdido">🔴 Perdido</option>
-                    </select>
-                  </td>
-
-                  <td className="p-3 text-right">
-                    {cot.estado === 'Pendiente' ? (
-                      <button
-                        onClick={() => enviarSeguimiento(cot)}
-                        className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1.5 rounded-xl text-[11px] shadow-xs transition-all"
-                        title="Enviar mensaje de seguimiento a las 48h"
-                      >
-                        <Send className="w-3 h-3" />
-                        <span>Seguimiento 48h</span>
-                      </button>
-                    ) : (
-                      <span className="text-slate-400 text-[11px] italic">Archivado</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {/* Nota de pie */}
+      <div className="text-center text-[11px] text-slate-500 py-2">
+        💡 Cada taller o empresa define sus propios plazos de aviso (24h, 48h o 7 días) según su ciclo de ventas.
       </div>
 
     </div>

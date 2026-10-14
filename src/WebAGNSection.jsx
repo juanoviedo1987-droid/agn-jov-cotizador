@@ -17,10 +17,10 @@ export default function WebAGNSection({ onSelectModule }) {
     m3: false   // M3 opcional
   });
 
-  // Precios base acordados
+  // Precios base acordados Grupo AGN
   const precios = {
-    m1: { setup: 250, mensual: 30, nombre: 'Módulo 1: Cotizador + Base de Datos' },
-    m2: { setup: 150, mensual: 15, nombre: 'Módulo 2: Filtro Web de Captación' },
+    m1: { setup: 250, mensual: 30, nombre: 'Módulo 1: Cotizador Móvil + Base de Datos' },
+    m2: { setup: 150, mensual: 15, nombre: 'Módulo 2: Filtro Web Anti-Curiosos' },
     m3: { setup: 150, mensual: 20, nombre: 'Módulo 3: Historial & Mini CRM' }
   };
 
@@ -38,26 +38,30 @@ export default function WebAGNSection({ onSelectModule }) {
                        (selectedModules.m3 ? precios.m3.mensual : 0);
 
   return (
-    <section className="bg-white text-slate-800 py-10 sm:py-16 px-4 antialiased selection:bg-[#4a208e] selection:text-white">
-      <div className="max-w-5xl mx-auto space-y-12 sm:space-y-16">
+    <section className="bg-white text-slate-800 py-8 sm:py-14 px-3 sm:px-4 antialiased selection:bg-[#4a208e] selection:text-white">
+      <div className="max-w-5xl mx-auto space-y-10 sm:space-y-14">
 
         {/* 1. Header / Hero */}
         <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-[#4a208e] text-xs font-extrabold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-[#e6007e]" />
-            Sistema Modular • Grupo AGN
+            Solución Universal para Pymes y Oficios • Grupo AGN
           </div>
           
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Plataforma Modular de Ventas & <br className="hidden sm:inline" />
+            Digitalizá las Cotizaciones y Ventas <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-[#4a208e] via-[#5a207e] to-[#e6007e] bg-clip-text text-transparent">
-              Cotización Rápida para Pymes
+              de tu Negocio en 48 Horas
             </span>
           </h2>
           
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            Sin paquetes cerrados ni sobrecostos. Empezá con la herramienta base que tu negocio necesita hoy y sumá módulos a medida que crezcas.
+            Sin paquetes cerrados ni sobrecostos. Cargamos tus propios productos, medidas y fórmulas de cálculo. Elegí los módulos que necesitás y escalá cuando quieras.
           </p>
+
+          <div className="inline-block bg-purple-50 text-[#4a208e] text-xs font-bold px-3 py-1 rounded-xl border border-purple-200">
+            💡 Esta demo es un ejemplo demostrativo. Cada instalación se entrega adaptada 100% a medida de tu rubro.
+          </div>
         </div>
 
         {/* 2. Los 3 Módulos Puros (Tarjetas Interactivas con botón para probar cada uno) */}
@@ -65,10 +69,10 @@ export default function WebAGNSection({ onSelectModule }) {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
               <h3 className="text-lg font-black text-slate-900">Los 3 Módulos a la Carta</h3>
-              <p className="text-xs text-slate-500">Seleccioná los módulos que querés sumar a tu solución:</p>
+              <p className="text-xs text-slate-500">Tocá para sumar o quitar módulos y ver el total en vivo:</p>
             </div>
             <span className="text-xs font-bold bg-purple-100 text-[#4a208e] px-2.5 py-1 rounded-full self-start sm:self-auto">
-              Precios transparentes en USD
+              Valores transparentes en USD
             </span>
           </div>
 
@@ -90,24 +94,24 @@ export default function WebAGNSection({ onSelectModule }) {
                 </div>
 
                 <div>
-                  <h4 className="text-base font-black text-slate-900">Módulo 1: Cotizador + Base de Datos</h4>
+                  <h4 className="text-base font-black text-slate-900">Módulo 1: Cotizador Móvil + Base</h4>
                   <p className="text-xs text-slate-600 mt-1">
-                    La app en el celular del taller para cotizar en 20 seg. Base de precios editable por vos en tu propia planilla sin tocar código.
+                    La app en el celular para cotizar en 20 segundos delante del cliente o en obra. Conectada a tu planilla en la nube para cambiar precios vos mismo sin tocar código.
                   </p>
                 </div>
 
                 <ul className="space-y-2 text-xs text-slate-700">
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 font-bold" />
-                    <span>Cálculo instantáneo en $ UYU y USD</span>
+                    <span>Cálculo instantáneo en USD y Moneda Local</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 font-bold" />
-                    <span>Base de datos en la nube editable</span>
+                    <span>Planilla en la nube autogestionable</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 font-bold" />
-                    <span>WhatsApp formal listo en 1 toque</span>
+                    <span>Despacho formal por WhatsApp en 1 toque</span>
                   </li>
                 </ul>
               </div>
@@ -141,22 +145,22 @@ export default function WebAGNSection({ onSelectModule }) {
                 <div>
                   <h4 className="text-base font-black text-slate-900">Módulo 2: Filtro Web Anti-Curiosos</h4>
                   <p className="text-xs text-slate-600 mt-1">
-                    Link público para poner en Instagram o WhatsApp. Obliga al cliente a cargar Nombre, Celular y medidas antes de pedir cotización.
+                    Link público para poner en tu Instagram o WhatsApp. Obliga al cliente a cargar Nombre, Teléfono y medidas o detalles antes de pedir cotización.
                   </p>
                 </div>
 
                 <ul className="space-y-2 text-xs text-slate-700">
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-pink-600 shrink-0 font-bold" />
-                    <span>Filtra curiosos que no compran</span>
+                    <span>Filtra curiosos que te hacen perder tiempo</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-pink-600 shrink-0 font-bold" />
-                    <span>Pide teléfono real de Uruguay</span>
+                    <span>Captura datos reales verificados</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-pink-600 shrink-0 font-bold" />
-                    <span>Alerta inmediata con pedido masticado</span>
+                    <span>Te llega el pedido masticado a tu celular</span>
                   </li>
                 </ul>
               </div>
@@ -200,14 +204,14 @@ export default function WebAGNSection({ onSelectModule }) {
                 <div>
                   <h4 className="text-base font-black text-slate-900">Módulo 3: Historial & Mini CRM</h4>
                   <p className="text-xs text-slate-600 mt-1">
-                    Cada cotización queda archivada sola con fecha, cliente y monto. Alertas a las 48h para recordar hacer seguimiento y no perder ventas.
+                    Cada presupuesto queda registrado solo. El sistema te avisa a las 48h con alerta para recordarte contactar al cliente y cerrar la seña.
                   </p>
                 </div>
 
                 <ul className="space-y-2 text-xs text-slate-700">
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 font-bold" />
-                    <span>Historial automático en planilla</span>
+                    <span>Historial automático en la nube</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 font-bold" />
@@ -252,13 +256,13 @@ export default function WebAGNSection({ onSelectModule }) {
               {selectedModules.m1 && selectedModules.m2 && selectedModules.m3 
                 ? 'Sistema Completo (Módulos 1 + 2 + 3)'
                 : selectedModules.m1 && selectedModules.m2
-                ? 'Cotizador Taller + Filtro Web (Módulos 1 + 2)'
+                ? 'Cotizador Móvil + Filtro Web (Módulos 1 + 2)'
                 : selectedModules.m1 && selectedModules.m3
-                ? 'Cotizador Taller + CRM (Módulos 1 + 3)'
-                : 'Cotizador Taller Base (Solo Módulo 1)'}
+                ? 'Cotizador Móvil + CRM (Módulos 1 + 3)'
+                : 'Cotizador Móvil Base (Solo Módulo 1)'}
             </h4>
             <p className="text-xs text-purple-200">
-              Incluye carga de catálogo, puesta en marcha, servidores y soporte técnico continuo.
+              Incluye carga inicial de tu catálogo, puesta a punto, servidores y soporte técnico continuo de Grupo AGN.
             </p>
           </div>
 
@@ -270,7 +274,7 @@ export default function WebAGNSection({ onSelectModule }) {
             </div>
 
             <a
-              href={`https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20consultar%20por%20la%20configuracion%20de%20modulos:%20Setup%20USD%20${totalSetup}%20+%20USD%20${totalMensual}/mes`}
+              href={`https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20consultar%20por%20la%20configuracion%20modular:%20Setup%20USD%20${totalSetup}%20+%20USD%20${totalMensual}/mes`}
               target="_blank"
               rel="noreferrer"
               className="w-full sm:w-auto bg-[#e6007e] hover:bg-[#d40074] text-white font-extrabold py-3.5 px-6 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-pink-900/30 transition-all shrink-0"
