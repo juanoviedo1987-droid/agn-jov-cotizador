@@ -11,7 +11,10 @@ import {
   Filter,
   FileText,
   Lightbulb,
-  CheckCircle2
+  CheckCircle2,
+  ChevronDown,
+  MessageCircle,
+  HelpCircle
 } from 'lucide-react';
 import { UNIVERSAL_RUBROS, calcularCotizacionUniversal } from './pricingConfig';
 
@@ -34,6 +37,13 @@ export default function App() {
     clienteNombre: 'Carlos Méndez',
     clienteTelefono: '099123456'
   });
+
+  // Estado del acordeón de FAQ
+  const [faqAbierta, setFaqAbierta] = useState(null);
+
+  const toggleFaq = (idx) => {
+    setFaqAbierta(faqAbierta === idx ? null : idx);
+  };
 
   const handleCambioRubro = (nuevoRubroId) => {
     setRubroId(nuevoRubroId);
@@ -103,11 +113,34 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const faqs = [
+    {
+      q: '¿Tengo que descargar o instalar algo en el celular o la computadora?',
+      a: 'No. Es una Aplicación Web moderna que funciona directo en el navegador de cualquier teléfono (Android o iPhone), tablet o PC. Podés guardarla como un acceso directo en tu pantalla de inicio con 1 toque sin ocupar espacio ni depender de tiendas de apps.'
+    },
+    {
+      q: '¿Cómo actualizo los precios si aumentan los costos de mis proveedores?',
+      a: 'Te entregamos una planilla en la nube autogestionable y muy simple. Modificás un precio o sumás un producto nuevo y se actualiza al instante en los celulares y computadoras de todo tu equipo, sin tocar código.'
+    },
+    {
+      q: '¿Qué pasa si mi negocio cotiza de forma distinta o con fórmulas complejas?',
+      a: 'Ese es nuestro mayor diferencial. No te forzamos a una fórmula fija ni a un enlatado: adaptamos el motor de cálculo a la lógica exacta de tu rubro (metros cuadrados, metros lineales, peso, horas de mano de obra o combos).'
+    },
+    {
+      q: '¿Mis empleados pueden ver los costos reales o solo el precio final al cliente?',
+      a: 'Se puede configurar para que el personal operativo o los vendedores en la calle solo vean el precio final de venta y el botón de WhatsApp, protegiendo la confidencialidad de tus márgenes y costos internos.'
+    },
+    {
+      q: '¿Qué cubre el abono mensual de mantenimiento?',
+      a: 'Cubre el alojamiento en servidores seguros en la nube de alta velocidad, copias de seguridad continuas y el soporte técnico y mantenimiento evolutivo de Grupo AGN para que tu aplicación esté siempre activa, rápida y disponible.'
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col antialiased selection:bg-[#4a208e] selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col antialiased selection:bg-[#4a208e] selection:text-white relative">
       
       {/* 1. Header Corporativo Grupo AGN */}
-      <header className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] text-white shadow-lg sticky top-0 z-50 border-b border-purple-800/40">
+      <header className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] text-white shadow-lg sticky top-0 z-40 border-b border-purple-800/40">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
@@ -130,7 +163,7 @@ export default function App() {
       </header>
 
       {/* Contenido Principal en Flujo Vertical Limpio */}
-      <main className="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-5 space-y-8 sm:space-y-12 pb-16">
+      <main className="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-5 space-y-8 sm:space-y-12 pb-20">
 
         {/* ==================================================== */}
         {/* PARTE 1: LA APLICACIÓN DE EJEMPLO EN VIVO (ARRIBA)   */}
@@ -551,7 +584,87 @@ export default function App() {
         </section>
 
         {/* ==================================================== */}
-        {/* PARTE 5: LLAMADO A LA ACCIÓN FINAL (WHATSAPP)        */}
+        {/* PARTE 5: PASO A PASO ÁGIL (EN 3 A 5 DÍAS HÁBILES)   */}
+        {/* ==================================================== */}
+        <section className="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xs space-y-4">
+          <div className="text-center max-w-lg mx-auto space-y-1">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#4a208e] bg-purple-100 px-3 py-1 rounded-full inline-block">
+              Puesta en Marcha sin Complicaciones
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+              Cómo trabajamos con tu empresa
+            </h3>
+            <p className="text-xs text-slate-500">
+              Nosotros nos encargamos de todo el trabajo técnico:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <div className="bg-purple-50/60 p-4 rounded-2xl border border-purple-100 space-y-1.5">
+              <span className="w-7 h-7 rounded-xl bg-[#4a208e] text-white flex items-center justify-center text-xs font-black">1</span>
+              <h4 className="font-bold text-sm text-slate-900">Nos mandás lo que tengas</h4>
+              <p className="text-xs text-slate-600">Una foto de tu lista, cuaderno o un audio contándonos cómo calculás tus precios.</p>
+            </div>
+
+            <div className="bg-purple-50/60 p-4 rounded-2xl border border-purple-100 space-y-1.5">
+              <span className="w-7 h-7 rounded-xl bg-[#4a208e] text-white flex items-center justify-center text-xs font-black">2</span>
+              <h4 className="font-bold text-sm text-slate-900">Te armamos la aplicación</h4>
+              <p className="text-xs text-slate-600">En 3 a 5 días hábiles tenés tu app lista con tus productos para probar en tu celular y PC.</p>
+            </div>
+
+            <div className="bg-purple-50/60 p-4 rounded-2xl border border-purple-100 space-y-1.5">
+              <span className="w-7 h-7 rounded-xl bg-[#4a208e] text-white flex items-center justify-center text-xs font-black">3</span>
+              <h4 className="font-bold text-sm text-slate-900">Puesta en marcha</h4>
+              <p className="text-xs text-slate-600">Si te gusta y te ahorra tiempo, la dejamos lista con tu marca y soporte de Grupo AGN.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ==================================================== */}
+        {/* PARTE 6: PREGUNTAS FRECUENTES (FAQ)                  */}
+        {/* ==================================================== */}
+        <section className="space-y-4">
+          <div className="text-center max-w-lg mx-auto space-y-1">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#e6007e] bg-pink-100 px-3 py-1 rounded-full inline-block">
+              Respuestas Claras
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+              Preguntas Frecuentes
+            </h3>
+            <p className="text-xs text-slate-500">
+              Todo lo que necesitás saber antes de empezar:
+            </p>
+          </div>
+
+          <div className="space-y-2.5 max-w-3xl mx-auto">
+            {faqs.map((faq, idx) => (
+              <div 
+                key={idx} 
+                className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs transition-all"
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full text-left p-4 flex items-center justify-between gap-3 text-xs sm:text-sm font-bold text-slate-900 hover:bg-slate-50 transition-all cursor-pointer min-h-[48px]"
+                >
+                  <span className="flex items-center gap-2">
+                    <HelpCircle className="w-4 h-4 text-[#4a208e] shrink-0" />
+                    <span>{faq.q}</span>
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${faqAbierta === idx ? 'rotate-180 text-[#4a208e]' : ''}`} />
+                </button>
+                {faqAbierta === idx && (
+                  <div className="px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100 bg-slate-50/50">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ==================================================== */}
+        {/* PARTE 7: LLAMADO A LA ACCIÓN FINAL (WHATSAPP)        */}
         {/* ==================================================== */}
         <section className="text-center bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm space-y-4">
           <div className="max-w-xl mx-auto space-y-2">
@@ -575,6 +688,18 @@ export default function App() {
         </section>
 
       </main>
+
+      {/* Botón Flotante de WhatsApp para Móvil y Desktop */}
+      <a
+        href="https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20consultar%20por%20una%20Aplicaci%C3%B3n%20Web%20a%20medida%20para%20mi%20negocio"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-4 right-4 z-50 bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-slate-950 font-black px-4 py-3 rounded-full shadow-2xl flex items-center gap-2 text-xs border-2 border-white transition-all shadow-emerald-950/20"
+        title="Consultar por WhatsApp"
+      >
+        <MessageCircle className="w-5 h-5 fill-slate-950 text-[#25D366]" />
+        <span className="hidden sm:inline font-bold">Consultar por WhatsApp</span>
+      </a>
 
       {/* Footer Corporativo */}
       <footer className="bg-white border-t border-purple-100 py-4 text-center text-xs text-slate-500">
