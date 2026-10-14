@@ -13,6 +13,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { PRICING_CONFIG, calcularCotizacion } from './pricingConfig';
+import WebAGNSection from './WebAGNSection';
 
 export default function App() {
   // Pestaña activa: 'taller' o 'filtro_cliente'
@@ -126,6 +127,17 @@ export default function App() {
             >
               <UserCheck className="w-3.5 h-3.5" />
               <span>Filtro Clientes</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('web_agn')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                activeTab === 'web_agn'
+                  ? 'bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white shadow-md border border-pink-300/30'
+                  : 'text-purple-200 hover:text-white'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Propuesta Web AGN</span>
             </button>
           </div>
         </div>
@@ -566,6 +578,13 @@ export default function App() {
               </form>
             )}
           </div>
+        )}
+
+        {/* ---------------------------------------------------- */}
+        {/* VISTA 3: SECCIÓN COMERCIAL PARA LA WEB DE GRUPO AGN  */}
+        {/* ---------------------------------------------------- */}
+        {activeTab === 'web_agn' && (
+          <WebAGNSection />
         )}
 
       </main>
