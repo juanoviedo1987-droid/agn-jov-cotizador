@@ -91,54 +91,56 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col antialiased selection:bg-purple-500 selection:text-white">
       {/* Header Corporativo Grupo AGN */}
       <header className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] text-white shadow-lg sticky top-0 z-50 border-b border-purple-800/40">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+          <div className="flex items-center justify-between w-full sm:w-auto">
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-black text-xl tracking-tight text-white">GRUPO AGN</span>
-                <span className="bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-sm">
+                <span className="font-black text-lg sm:text-xl tracking-tight text-white">GRUPO AGN</span>
+                <span className="bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white text-[9px] sm:text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-sm">
                   Demo
                 </span>
               </div>
-              <span className="text-[11px] text-purple-200 font-medium">Cotizador Express de Aberturas</span>
+              <span className="text-[10px] sm:text-[11px] text-purple-200 font-medium">Cotizador Express de Aberturas</span>
             </div>
           </div>
 
-          {/* Switcher de Vista */}
-          <div className="bg-[#1f0a40]/70 p-1 rounded-2xl flex items-center border border-purple-400/20 backdrop-blur-sm">
-            <button
-              onClick={() => setActiveTab('taller')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === 'taller'
-                  ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
-                  : 'text-purple-200 hover:text-white'
-              }`}
-            >
-              <Wrench className="w-3.5 h-3.5" />
-              <span>Modo Taller</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('filtro_cliente')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === 'filtro_cliente'
-                  ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
-                  : 'text-purple-200 hover:text-white'
-              }`}
-            >
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>Filtro Clientes</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('web_agn')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                activeTab === 'web_agn'
-                  ? 'bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white shadow-md border border-pink-300/30'
-                  : 'text-purple-200 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Propuesta Web AGN</span>
-            </button>
+          {/* Switcher de Vista Mobile-First con scroll suave si la pantalla es chica */}
+          <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-0.5">
+            <div className="bg-[#1f0a40]/90 p-1 rounded-2xl flex items-center border border-purple-400/20 backdrop-blur-sm min-w-max mx-auto sm:mx-0">
+              <button
+                onClick={() => setActiveTab('taller')}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
+                  activeTab === 'taller'
+                    ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
+                    : 'text-purple-200 hover:text-white'
+                }`}
+              >
+                <Wrench className="w-3.5 h-3.5" />
+                <span>Modo Taller</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('filtro_cliente')}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
+                  activeTab === 'filtro_cliente'
+                    ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
+                    : 'text-purple-200 hover:text-white'
+                }`}
+              >
+                <UserCheck className="w-3.5 h-3.5" />
+                <span>Filtro Clientes</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('web_agn')}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
+                  activeTab === 'web_agn'
+                    ? 'bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white shadow-md border border-pink-300/30'
+                    : 'text-purple-200 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Propuesta Web AGN</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
