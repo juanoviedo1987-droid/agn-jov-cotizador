@@ -5,330 +5,308 @@ import {
   Sparkles, 
   Smartphone, 
   Zap, 
-  ShieldCheck, 
   Database, 
   Filter, 
   BarChart3, 
-  ExternalLink,
-  MessageCircle
+  Plus,
+  Send,
+  Calendar,
+  Clock,
+  Phone,
+  User,
+  ExternalLink
 } from 'lucide-react';
 
-export default function WebAGNSection() {
-  const [billingCycle, setBillingCycle] = useState('monthly'); // 'monthly' | 'annual'
+export default function WebAGNSection({ onSelectModule }) {
+  // Selector dinámico interactivo de módulos
+  const [selectedModules, setSelectedModules] = useState({
+    m1: true,   // M1 es la base obligatoria
+    m2: true,   // M2 activo por defecto en la demo
+    m3: false   // M3 opcional
+  });
+
+  // Precios base acordados
+  const precios = {
+    m1: { setup: 250, mensual: 30, nombre: 'Módulo 1: Cotizador + Base de Datos' },
+    m2: { setup: 150, mensual: 15, nombre: 'Módulo 2: Filtro Web de Captación' },
+    m3: { setup: 150, mensual: 20, nombre: 'Módulo 3: Historial & Mini CRM' }
+  };
+
+  const toggleModule = (mod) => {
+    if (mod === 'm1') return; // M1 no se puede desactivar porque es la base
+    setSelectedModules(prev => ({ ...prev, [mod]: !prev[mod] }));
+  };
+
+  const totalSetup = (selectedModules.m1 ? precios.m1.setup : 0) +
+                     (selectedModules.m2 ? precios.m2.setup : 0) +
+                     (selectedModules.m3 ? precios.m3.setup : 0);
+
+  const totalMensual = (selectedModules.m1 ? precios.m1.mensual : 0) +
+                       (selectedModules.m2 ? precios.m2.mensual : 0) +
+                       (selectedModules.m3 ? precios.m3.mensual : 0);
 
   return (
-    <section className="bg-white text-slate-800 py-16 px-4 antialiased selection:bg-[#4a208e] selection:text-white">
-      <div className="max-w-6xl mx-auto space-y-16">
+    <section className="bg-white text-slate-800 py-10 sm:py-16 px-4 antialiased selection:bg-[#4a208e] selection:text-white">
+      <div className="max-w-5xl mx-auto space-y-12 sm:space-y-16">
 
-        {/* 1. Header / Hero de la Sección en la Web de Grupo AGN */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
+        {/* 1. Header / Hero */}
+        <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-[#4a208e] text-xs font-extrabold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-[#e6007e]" />
-            Nuevo Servicio • Grupo AGN
+            Sistema Modular • Grupo AGN
           </div>
           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Cotizadores Inteligentes & <br className="hidden sm:inline" />
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            Plataforma Modular de Ventas & <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-[#4a208e] via-[#5a207e] to-[#e6007e] bg-clip-text text-transparent">
-              Sistemas de Captación para Pymes
+              Cotización Rápida para Pymes
             </span>
           </h2>
           
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            Presupuestá en 20 segundos desde el celular con tus costos actualizados, eliminá las consultas de curiosos en redes sociales y enviá propuestas formales por WhatsApp con 1 clic.
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Sin paquetes cerrados ni sobrecostos. Empezá con la herramienta base que tu negocio necesita hoy y sumá módulos a medida que crezcas.
           </p>
+        </div>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
+        {/* 2. Los 3 Módulos Puros (Tarjetas Interactivas con botón para probar cada uno) */}
+        <div className="space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Los 3 Módulos a la Carta</h3>
+              <p className="text-xs text-slate-500">Seleccioná los módulos que querés sumar a tu solución:</p>
+            </div>
+            <span className="text-xs font-bold bg-purple-100 text-[#4a208e] px-2.5 py-1 rounded-full self-start sm:self-auto">
+              Precios transparentes en USD
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+
+            {/* MÓDULO 1 */}
+            <div className={`rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col justify-between ${
+              selectedModules.m1 ? 'border-[#4a208e] bg-purple-50/30 shadow-md' : 'border-slate-200 bg-white'
+            }`}>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                    Base Obligatoria
+                  </span>
+                  <div className="text-right">
+                    <span className="text-lg font-black text-slate-900">USD 250</span>
+                    <span className="text-[11px] text-slate-500 block">+ USD 30/mes</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-base font-black text-slate-900">Módulo 1: Cotizador + Base de Datos</h4>
+                  <p className="text-xs text-slate-600 mt-1">
+                    La app en el celular del taller para cotizar en 20 seg. Base de precios editable por vos en tu propia planilla sin tocar código.
+                  </p>
+                </div>
+
+                <ul className="space-y-2 text-xs text-slate-700">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 font-bold" />
+                    <span>Cálculo instantáneo en $ UYU y USD</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 font-bold" />
+                    <span>Base de datos en la nube editable</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 font-bold" />
+                    <span>WhatsApp formal listo en 1 toque</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-slate-200/60">
+                <button
+                  onClick={() => onSelectModule && onSelectModule('taller')}
+                  className="w-full bg-[#4a208e] hover:bg-[#5a207e] text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                >
+                  <Smartphone className="w-3.5 h-3.5" />
+                  <span>Probar Demo Módulo 1</span>
+                </button>
+              </div>
+            </div>
+
+            {/* MÓDULO 2 */}
+            <div className={`rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col justify-between ${
+              selectedModules.m2 ? 'border-[#e6007e] bg-pink-50/20 shadow-md' : 'border-slate-200 bg-white'
+            }`}>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="bg-pink-100 text-[#e6007e] border border-pink-200 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                    Captación Web
+                  </span>
+                  <div className="text-right">
+                    <span className="text-lg font-black text-slate-900">+ USD 150</span>
+                    <span className="text-[11px] text-slate-500 block">+ USD 15/mes</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-base font-black text-slate-900">Módulo 2: Filtro Web Anti-Curiosos</h4>
+                  <p className="text-xs text-slate-600 mt-1">
+                    Link público para poner en Instagram o WhatsApp. Obliga al cliente a cargar Nombre, Celular y medidas antes de pedir cotización.
+                  </p>
+                </div>
+
+                <ul className="space-y-2 text-xs text-slate-700">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-pink-600 shrink-0 font-bold" />
+                    <span>Filtra curiosos que no compran</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-pink-600 shrink-0 font-bold" />
+                    <span>Pide teléfono real de Uruguay</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-pink-600 shrink-0 font-bold" />
+                    <span>Alerta inmediata con pedido masticado</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-slate-200/60 space-y-2">
+                <button
+                  onClick={() => toggleModule('m2')}
+                  className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all border ${
+                    selectedModules.m2 
+                      ? 'bg-pink-100 border-pink-300 text-[#e6007e]' 
+                      : 'bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {selectedModules.m2 ? '✓ Módulo 2 Seleccionado' : '+ Sumar Módulo 2'}
+                </button>
+                <button
+                  onClick={() => onSelectModule && onSelectModule('filtro_cliente')}
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <Filter className="w-3.5 h-3.5" />
+                  <span>Probar Demo Módulo 2</span>
+                </button>
+              </div>
+            </div>
+
+            {/* MÓDULO 3 */}
+            <div className={`rounded-3xl p-5 sm:p-6 border-2 transition-all flex flex-col justify-between ${
+              selectedModules.m3 ? 'border-indigo-600 bg-indigo-50/20 shadow-md' : 'border-slate-200 bg-white'
+            }`}>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="bg-indigo-100 text-indigo-800 border border-indigo-200 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                    Gestión & CRM
+                  </span>
+                  <div className="text-right">
+                    <span className="text-lg font-black text-slate-900">+ USD 150</span>
+                    <span className="text-[11px] text-slate-500 block">+ USD 20/mes</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-base font-black text-slate-900">Módulo 3: Historial & Mini CRM</h4>
+                  <p className="text-xs text-slate-600 mt-1">
+                    Cada cotización queda archivada sola con fecha, cliente y monto. Alertas a las 48h para recordar hacer seguimiento y no perder ventas.
+                  </p>
+                </div>
+
+                <ul className="space-y-2 text-xs text-slate-700">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 font-bold" />
+                    <span>Historial automático en planilla</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 font-bold" />
+                    <span>Alertas de seguimiento a las 48h</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 font-bold" />
+                    <span>Métricas de facturación mensual</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-slate-200/60 space-y-2">
+                <button
+                  onClick={() => toggleModule('m3')}
+                  className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all border ${
+                    selectedModules.m3 
+                      ? 'bg-indigo-100 border-indigo-300 text-indigo-800' 
+                      : 'bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {selectedModules.m3 ? '✓ Módulo 3 Seleccionado' : '+ Sumar Módulo 3'}
+                </button>
+                <button
+                  onClick={() => onSelectModule && onSelectModule('crm_demo')}
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <BarChart3 className="w-3.5 h-3.5" />
+                  <span>Probar Demo Módulo 3</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* 3. Calculadora Resumen del Pedido Modular */}
+        <div className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 text-center md:text-left">
+            <span className="text-xs uppercase font-extrabold text-[#cb69fc] tracking-wider">Tu Configuración Modular</span>
+            <h4 className="text-xl sm:text-2xl font-black">
+              {selectedModules.m1 && selectedModules.m2 && selectedModules.m3 
+                ? 'Sistema Completo (Módulos 1 + 2 + 3)'
+                : selectedModules.m1 && selectedModules.m2
+                ? 'Cotizador Taller + Filtro Web (Módulos 1 + 2)'
+                : selectedModules.m1 && selectedModules.m3
+                ? 'Cotizador Taller + CRM (Módulos 1 + 3)'
+                : 'Cotizador Taller Base (Solo Módulo 1)'}
+            </h4>
+            <p className="text-xs text-purple-200">
+              Incluye carga de catálogo, puesta en marcha, servidores y soporte técnico continuo.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            <div className="bg-white/10 border border-white/20 rounded-2xl px-5 py-3 text-center w-full sm:w-auto backdrop-blur-sm">
+              <span className="text-[10px] uppercase font-bold text-purple-200 block">Inversión Inicial</span>
+              <div className="text-2xl font-black text-white">USD {totalSetup}</div>
+              <span className="text-[11px] text-purple-300 block">+ USD {totalMensual} / mes</span>
+            </div>
+
             <a
-              href="https://juanoviedo1987-droid.github.io/agn-jov-cotizador/"
+              href={`https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20consultar%20por%20la%20configuracion%20de%20modulos:%20Setup%20USD%20${totalSetup}%20+%20USD%20${totalMensual}/mes`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-[#4a208e] to-[#5a207e] hover:opacity-95 text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg shadow-purple-900/20 text-sm transition-all"
+              className="w-full sm:w-auto bg-[#e6007e] hover:bg-[#d40074] text-white font-extrabold py-3.5 px-6 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-pink-900/30 transition-all shrink-0"
             >
-              <span>Ver Demo en Vivo (Aberturas)</span>
-              <ExternalLink className="w-4 h-4" />
-            </a>
-            <a
-              href="#precios"
-              className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3.5 rounded-2xl text-sm transition-all"
-            >
-              <span>Ver Planes & Precios</span>
+              <span>Consultar por WhatsApp</span>
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
 
-        {/* 2. Comparativa: El Antes y el Después */}
-        <div className="bg-gradient-to-br from-[#2c1256] to-[#1a0836] rounded-3xl p-6 sm:p-10 text-white shadow-xl border border-purple-900/40">
-          <div className="text-center max-w-xl mx-auto mb-8">
-            <span className="text-xs font-bold text-[#cb69fc] uppercase tracking-wider">El Impacto en tu Negocio</span>
-            <h3 className="text-2xl font-black mt-1">¿Cuánto tiempo y dinero pierde tu empresa hoy?</h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-              <span className="text-xs font-bold text-rose-400 uppercase tracking-wider block">❌ El Método Tradicional</span>
-              <ul className="space-y-3 text-sm text-slate-300">
-                <li className="flex items-start gap-2.5">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span>15 a 20 minutos por cada consulta buscando costos en planillas de Excel y calculando a mano.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span>Pérdida de ventas frente a competidores que responden más rápido.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span>30 mensajes al día en Instagram de curiosos que preguntan "precio" y no vuelven a contestar.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span>Presupuestos enviados que quedan en la nada porque nadie tiene tiempo de hacer seguimiento.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-white/10 border border-[#cb69fc]/30 rounded-2xl p-6 space-y-4 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-gradient-to-l from-[#e6007e] to-[#cb69fc] text-white text-[10px] uppercase font-extrabold px-3 py-1 rounded-bl-xl">
-                Solución Grupo AGN
-              </div>
-              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block">✅ Con tu Cotizador AGN</span>
-              <ul className="space-y-3 text-sm text-white">
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span><strong>Cotización en 20 segundos</strong> desde el celular con tus costos reales y margen de ganancia.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span><strong>Propuesta formal por WhatsApp en 1 toque:</strong> mensaje profesional y detallado listo para enviar.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span><strong>Filtro calificador de clientes:</strong> frena curiosos y entrega solicitudes con nombre, medidas y teléfono real.</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span><strong>Base de datos editable:</strong> cambiás los precios en tu planilla y la app se actualiza sola al instante.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. Tabla de Precios y Módulos */}
-        <div id="precios" className="space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold text-[#4a208e] uppercase tracking-wider">Estructura Modular & Escalable</span>
-            <h3 className="text-3xl font-black text-slate-900">Elegí el plan para tu negocio</h3>
-            <p className="text-sm text-slate-500">
-              Iniciá con lo que necesitás hoy y sumá funciones a medida que tu empresa crece. Precios transparentes en USD.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-            {/* PLAN 1: COMBO OPERATIVO */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-purple-300 transition-all">
-              <div className="space-y-5">
-                <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Uso Interno</span>
-                  <h4 className="text-2xl font-black text-slate-900 mt-1">Combo Operativo</h4>
-                  <p className="text-xs text-slate-500 mt-1">La herramienta rápida de bolsillo para el dueño o taller.</p>
-                </div>
-
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                  <div className="text-3xl font-black text-slate-900">USD 250</div>
-                  <div className="text-xs text-slate-500 font-medium">Setup inicial (único pago)</div>
-                  <div className="text-sm font-bold text-[#4a208e] mt-2">+ USD 30 / mes</div>
-                  <div className="text-[11px] text-slate-400">Hosting en la nube y soporte</div>
-                </div>
-
-                <ul className="space-y-3 text-xs text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>App Web privada</strong> (Móvil / PC con tu marca)</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Cálculo en 20 segundos</strong> de costos y precio final</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Base de datos de productos</strong> editable por vos</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Botón WhatsApp directo</strong> con presupuesto listo</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Carga inicial de tu catálogo y fórmulas</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-6 border-t border-slate-100 mt-6">
-                <a
-                  href="https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20consultar%20por%20el%20Combo%20Operativo"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all"
-                >
-                  <span>Consultar Combo Operativo</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
-
-            {/* PLAN 2: PRO VENTAS (EL DESTACADO) */}
-            <div className="bg-gradient-to-b from-white to-[#fcfaff] rounded-3xl p-6 sm:p-8 border-2 border-[#4a208e] shadow-xl flex flex-col justify-between relative transform lg:-translate-y-2">
-              <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#4a208e] to-[#e6007e] text-white text-[10px] uppercase font-extrabold px-4 py-1 rounded-full shadow-md">
-                ⭐ Más Elegido por Pymes
-              </div>
-
-              <div className="space-y-5">
-                <div>
-                  <span className="text-xs font-bold text-[#4a208e] uppercase tracking-wider">Taller + Captación Web</span>
-                  <h4 className="text-2xl font-black text-slate-900 mt-1">Combo Pro Ventas</h4>
-                  <p className="text-xs text-slate-500 mt-1">Cotizá rápido y filtrá curiosos de redes en automático.</p>
-                </div>
-
-                <div className="bg-[#f8f4fc] p-4 rounded-2xl border border-purple-200">
-                  <div className="flex items-baseline gap-2">
-                    <div className="text-3xl font-black text-slate-900">USD 380</div>
-                    <span className="text-xs line-through text-slate-400">USD 400</span>
-                  </div>
-                  <div className="text-xs text-slate-500 font-medium">Setup inicial bonificado (único pago)</div>
-                  <div className="text-sm font-bold text-[#4a208e] mt-2">+ USD 45 / mes</div>
-                  <div className="text-[11px] text-slate-400">Hosting público, servidor y soporte</div>
-                </div>
-
-                <ul className="space-y-3 text-xs text-slate-700">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#4a208e] shrink-0 font-bold" />
-                    <span><strong>Todo lo del Combo Operativo</strong> (Módulo 1)</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#4a208e] shrink-0 font-bold" />
-                    <span><strong>Página Web Pública Calificadora</strong> con tu marca</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#4a208e] shrink-0 font-bold" />
-                    <span><strong>Filtro Anti-Curiosos:</strong> pide Nombre, Teléfono y medidas</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#4a208e] shrink-0 font-bold" />
-                    <span><strong>Alertas a tu WhatsApp:</strong> pedidos listos para cotizar</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-[#4a208e] shrink-0 font-bold" />
-                    <span>Link para Instagram, Google Ads y WhatsApp</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-6 border-t border-purple-100 mt-6">
-                <a
-                  href="https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20el%20Combo%20Pro%20Ventas"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full bg-gradient-to-r from-[#4a208e] to-[#5a207e] hover:opacity-95 text-white font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-900/20 transition-all"
-                >
-                  <span>Elegir Combo Pro Ventas</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-
-            {/* PLAN 3: FULL INTEGRADO */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-purple-300 transition-all">
-              <div className="space-y-5">
-                <div>
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Gestión & CRM</span>
-                  <h4 className="text-2xl font-black text-slate-900 mt-1">Combo Full Gestión</h4>
-                  <p className="text-xs text-slate-500 mt-1">Control de ventas, historial de clientes y alertas a las 48h.</p>
-                </div>
-
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                  <div className="flex items-baseline gap-2">
-                    <div className="text-3xl font-black text-slate-900">USD 500</div>
-                    <span className="text-xs line-through text-slate-400">USD 550</span>
-                  </div>
-                  <div className="text-xs text-slate-500 font-medium">Setup inicial bonificado (único pago)</div>
-                  <div className="text-sm font-bold text-[#4a208e] mt-2">+ USD 65 / mes</div>
-                  <div className="text-[11px] text-slate-400">Automatizaciones, base y soporte prioritario</div>
-                </div>
-
-                <ul className="space-y-3 text-xs text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Todo lo del Combo Pro Ventas</strong> (Módulos 1 y 2)</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Historial centralizado:</strong> cada cotización se archiva sola</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Mini CRM en Google Sheets:</strong> estados de venta</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span><strong>Alertas a las 48h:</strong> recordatorios para cerrar presupuestos</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Métricas mensuales de ventas y facturación</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-6 border-t border-slate-100 mt-6">
-                <a
-                  href="https://wa.me/?text=Hola%20Grupo%20AGN,%20quiero%20el%20Combo%20Full%20Gestion"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all"
-                >
-                  <span>Consultar Combo Full</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* 4. Cláusula de Personalizaciones & Add-ons */}
-        <div className="bg-purple-50/70 border border-purple-200/80 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        {/* 4. Política de Personalizaciones Especiales */}
+        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="space-y-1">
-            <span className="text-xs font-bold text-[#4a208e] uppercase tracking-wider flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-[#e6007e]" /> ¿Necesitás una función especial para tu empresa?
+            <span className="text-xs font-bold text-[#4a208e] uppercase tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
+              <Zap className="w-4 h-4 text-[#e6007e]" /> ¿Precisás una función o circuito especial fuera del estándar?
             </span>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-2xl">
-              Nuestros módulos estándar resuelven el 90% de las ventas de cualquier negocio. Si tu circuito requiere funciones específicas (generador de presupuestos en <strong>PDF descargable con membrete</strong>, cálculo de <strong>fletes por kilometraje</strong> o <strong>cobro de señas con Mercado Pago</strong>), te lo cotizamos e integramos a medida en 48/72 horas.
+            <p className="text-xs text-slate-600 max-w-2xl leading-relaxed">
+              La plataforma incluye la adaptación completa a tu rubro y listas de precios. Si tu negocio precisa funciones especiales (presupuestos en <strong>PDF con logo</strong>, <strong>cálculo de fletes por kilometraje</strong> o <strong>cobro de señas online</strong>), se cotiza aparte a un valor base de <strong>USD 30 la hora</strong> con precio cerrado y entrega en 48/72 horas.
             </p>
           </div>
           <a
-            href="https://wa.me/?text=Hola%20Grupo%20AGN,%20tengo%20un%20requerimiento%20a%20medida"
+            href="https://wa.me/?text=Hola%20Grupo%20AGN,%20tengo%20un%20pedido%20de%20desarrollo%20a%20medida"
             target="_blank"
             rel="noreferrer"
-            className="shrink-0 bg-[#4a208e] hover:bg-[#5a207e] text-white text-xs font-bold px-5 py-3 rounded-xl transition-all"
+            className="shrink-0 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all"
           >
             Consultar a Medida
           </a>
-        </div>
-
-        {/* 5. Rubros aplicables */}
-        <div className="text-center space-y-4 pt-4 border-t border-slate-100">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Adaptable a Cualquier Industria</span>
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-bold text-slate-600">
-            <span className="bg-slate-100 px-3.5 py-1.5 rounded-full">🪟 Carpinterías de Aluminio & PVC</span>
-            <span className="bg-slate-100 px-3.5 py-1.5 rounded-full">🪚 Fábricas de Muebles & Placards</span>
-            <span className="bg-slate-100 px-3.5 py-1.5 rounded-full">🔩 Herrerías & Estructuras</span>
-            <span className="bg-slate-100 px-3.5 py-1.5 rounded-full">🖨️ Imprentas & Cartelería</span>
-            <span className="bg-slate-100 px-3.5 py-1.5 rounded-full">❄️ Climatización & Instalaciones</span>
-          </div>
         </div>
 
       </div>

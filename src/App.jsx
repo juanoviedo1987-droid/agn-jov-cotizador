@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { PRICING_CONFIG, calcularCotizacion } from './pricingConfig';
 import WebAGNSection from './WebAGNSection';
+import DemoModulo3 from './DemoModulo3';
 
 export default function App() {
   // Pestaña activa: 'taller' o 'filtro_cliente'
@@ -116,7 +117,7 @@ export default function App() {
                 }`}
               >
                 <Wrench className="w-3.5 h-3.5" />
-                <span>Modo Taller</span>
+                <span>Módulo 1: Cotizador</span>
               </button>
               <button
                 onClick={() => setActiveTab('filtro_cliente')}
@@ -127,7 +128,18 @@ export default function App() {
                 }`}
               >
                 <UserCheck className="w-3.5 h-3.5" />
-                <span>Filtro Clientes</span>
+                <span>Módulo 2: Filtro Web</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('crm_demo')}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
+                  activeTab === 'crm_demo'
+                    ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
+                    : 'text-purple-200 hover:text-white'
+                }`}
+              >
+                <BarChart3 className="w-3.5 h-3.5" />
+                <span>Módulo 3: Mini CRM</span>
               </button>
               <button
                 onClick={() => setActiveTab('web_agn')}
@@ -138,7 +150,7 @@ export default function App() {
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Propuesta Web AGN</span>
+                <span>Catálogo Modular AGN</span>
               </button>
             </div>
           </div>
@@ -583,10 +595,17 @@ export default function App() {
         )}
 
         {/* ---------------------------------------------------- */}
-        {/* VISTA 3: SECCIÓN COMERCIAL PARA LA WEB DE GRUPO AGN  */}
+        {/* VISTA 3: DEMO INTERACTIVA MÓDULO 3 (MINI CRM)        */}
+        {/* ---------------------------------------------------- */}
+        {activeTab === 'crm_demo' && (
+          <DemoModulo3 />
+        )}
+
+        {/* ---------------------------------------------------- */}
+        {/* VISTA 4: CATÁLOGO MODULAR PARA LA WEB DE GRUPO AGN   */}
         {/* ---------------------------------------------------- */}
         {activeTab === 'web_agn' && (
-          <WebAGNSection />
+          <WebAGNSection onSelectModule={(tab) => setActiveTab(tab)} />
         )}
 
       </main>
