@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Wrench, 
   UserCheck, 
@@ -10,15 +10,49 @@ import {
   ShieldCheck, 
   ArrowRight, 
   RotateCcw,
-  Sparkles
+  Sparkles,
+  BarChart3
 } from 'lucide-react';
 import { PRICING_CONFIG, calcularCotizacion } from './pricingConfig';
 import WebAGNSection from './WebAGNSection';
 import DemoModulo3 from './DemoModulo3';
 
 export default function App() {
-  // Pestaña activa: 'taller' o 'filtro_cliente'
-  const [activeTab, setActiveTab] = useState('taller');
+  // Función para resolver la pestaña a partir del hash de la URL
+  const getTabFromHash = () => {
+    if (typeof window === 'undefined') return 'taller';
+    const hash = window.location.hash.toLowerCase().replace('#', '');
+    if (hash === 'precios' || hash === 'catalogo' || hash === 'agn' || hash === 'web_agn') return 'web_agn';
+    if (hash === 'modulo3' || hash === 'crm' || hash === 'crm_demo') return 'crm_demo';
+    if (hash === 'modulo2' || hash === 'filtro' || hash === 'filtro_cliente') return 'filtro_cliente';
+    if (hash === 'modulo1' || hash === 'taller' || hash === 'cotizador') return 'taller';
+    return 'taller';
+  };
+
+  // Pestaña activa con sincronización bidireccional de hash
+  const [activeTab, setActiveTab] = useState(getTabFromHash);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveTab(getTabFromHash());
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Cambio de pestaña con actualización de hash
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    const hashMapping = {
+      taller: 'cotizador',
+      filtro_cliente: 'filtro',
+      crm_demo: 'modulo3',
+      web_agn: 'precios'
+    };
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', `#${hashMapping[tabId] || tabId}`);
+    }
+  };
 
   // Selector multimoneda global
   const [moneda, setMoneda] = useState('USD'); // 'USD' | 'UYU' | 'ARS' | 'LOCAL'
@@ -116,7 +150,7 @@ export default function App() {
           <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-0.5">
             <div className="bg-[#1f0a40]/90 p-1 rounded-2xl flex items-center border border-purple-400/20 backdrop-blur-sm min-w-max mx-auto sm:mx-0">
               <button
-                onClick={() => setActiveTab('taller')}
+                onClick={() => handleTabChange('taller')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
                   activeTab === 'taller'
                     ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
@@ -127,7 +161,7 @@ export default function App() {
                 <span>Módulo 1: Cotizador</span>
               </button>
               <button
-                onClick={() => setActiveTab('filtro_cliente')}
+                onClick={() => handleTabChange('filtro_cliente')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
                   activeTab === 'filtro_cliente'
                     ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
@@ -138,7 +172,7 @@ export default function App() {
                 <span>Módulo 2: Filtro Web</span>
               </button>
               <button
-                onClick={() => setActiveTab('crm_demo')}
+                onClick={() => handleTabChange('crm_demo')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
                   activeTab === 'crm_demo'
                     ? 'bg-gradient-to-r from-[#4a208e] to-[#5a207e] text-white shadow-md border border-purple-300/30'
@@ -149,7 +183,7 @@ export default function App() {
                 <span>Módulo 3: Mini CRM</span>
               </button>
               <button
-                onClick={() => setActiveTab('web_agn')}
+                onClick={() => handleTabChange('web_agn')}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all min-h-[40px] touch-manipulation ${
                   activeTab === 'web_agn'
                     ? 'bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white shadow-md border border-pink-300/30'
@@ -653,7 +687,7 @@ export default function App() {
         {/* VISTA 4: CATÁLOGO MODULAR PARA LA WEB DE GRUPO AGN   */}
         {/* ---------------------------------------------------- */}
         {activeTab === 'web_agn' && (
-          <WebAGNSection onSelectModule={(tab) => setActiveTab(tab)} />
+          <WebAGNSection onSelectModule={(tab) => handleTabChange(tab)} />
         )}
 
       </main>

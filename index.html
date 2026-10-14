@@ -3,14 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Grupo AGN | Cotizador Express de Aberturas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f8fafc;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      }
+      .initial-loader {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8fafc;
+        padding: 20px;
+        text-align: center;
+      }
+      .spinner {
+        width: 36px;
+        height: 36px;
+        border: 3.5px solid #e9d5ff;
+        border-top-color: #4a208e;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 16px;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+    <script>
+      window.addEventListener('error', function(e) {
+        var root = document.getElementById('root');
+        if (root && (!root.children || root.children.length === 0 || root.querySelector('.initial-loader'))) {
+          root.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;padding:20px;font-family:sans-serif;text-align:center;"><div style="background:#fff;padding:24px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,0.08);border:1px solid #e2e8f0;max-width:380px;width:100%;"><span style="background:#f3e8ff;color:#4a208e;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:bold;text-transform:uppercase;">Grupo AGN</span><h3 style="color:#0f172a;margin:12px 0 6px;font-size:18px;">Error al inicializar</h3><p style="color:#64748b;font-size:12px;margin-bottom:16px;">' + (e.message || 'Error cargando scripts') + '</p><button onclick="window.location.reload(true)" style="background:#4a208e;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:bold;cursor:pointer;font-size:13px;width:100%;">Recargar Página</button></div></div>';
+        }
+      });
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="initial-loader">
+        <div class="spinner"></div>
+        <div style="font-weight:800;color:#2c1256;font-size:15px;letter-spacing:-0.02em;">GRUPO AGN</div>
+        <div style="font-size:12px;color:#6b21a8;margin-top:2px;font-weight:500;">Cargando Cotizador Express...</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

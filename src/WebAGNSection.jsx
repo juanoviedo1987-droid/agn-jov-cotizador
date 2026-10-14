@@ -5,16 +5,8 @@ import {
   Sparkles, 
   Smartphone, 
   Zap, 
-  Database, 
   Filter, 
-  BarChart3, 
-  Plus,
-  Send,
-  Calendar,
-  Clock,
-  Phone,
-  User,
-  ExternalLink
+  BarChart3
 } from 'lucide-react';
 
 export default function WebAGNSection({ onSelectModule }) {

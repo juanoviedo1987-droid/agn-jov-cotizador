@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  BarChart3, 
-  Clock, 
-  CheckCircle2, 
-  XCircle, 
-  Phone, 
-  Send, 
-  Calendar, 
-  DollarSign, 
-  TrendingUp, 
   Bell, 
-  User, 
-  Filter,
-  ArrowUpRight
+  Send 
 } from 'lucide-react';
 
 export default function DemoModulo3() {
