@@ -285,30 +285,22 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                 </div>
               </div>
 
-              <!-- Selector de Adicionales Sugeridos (Hasta 5 Módulos Editables) -->
-              <div class="space-y-1.5 pt-1 text-xs">
-                <span class="block font-bold text-slate-700">Módulos Adicionales para Tentar al Cliente (Editables):</span>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                  <div>
-                    <input type="text" id="inputPropMod1Titulo" value="📸 Módulo de Fotos de Obra" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod1Desc" value="Subida y guardado en la nube de fotos del vano a sustituir." oninput="actualizarHojaPropuesta()" class="w-full bg-white border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
-                  </div>
-                  <div>
-                    <input type="text" id="inputPropMod2Titulo" value="📄 Generador PDF Oficial con Logo" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod2Desc" value="Exportación de cotizaciones en hoja membretada PDF descargable." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
-                  </div>
-                  <div>
-                    <input type="text" id="inputPropMod3Titulo" value="💰 Módulo de Señas & Cobranzas" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod3Desc" value="Control de señas del 50% recibidas y saldos pendientes." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
-                  </div>
-                  <div>
-                    <input type="text" id="inputPropMod4Titulo" value="👥 CRM & Marketing de Clientes" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod4Desc" value="Base de datos para seguimiento de presupuestos y promociones." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
-                  </div>
-                  <div class="sm:col-span-2 lg:col-span-2">
-                    <input type="text" id="inputPropMod5Titulo" value="🌐 Portal Web Abierto 24/7" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod5Desc" value="Cotizador público integrado a tu web o redes sociales para recibir solicitudes día y noche." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
-                  </div>
+              <!-- Selector de Adicionales Sugeridos (Dinámico: Poner y Sacar Opciones) -->
+              <div class="space-y-2 pt-1 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="block font-bold text-slate-700">Módulos Adicionales para Tentar al Cliente (Agregá o quitá según el rubro):</span>
+                  <button 
+                    type="button"
+                    onclick="agregarModuloAdicional()" 
+                    class="px-2.5 py-1 bg-purple-100 hover:bg-purple-200 text-agn-purple rounded-lg font-bold text-[11px] flex items-center gap-1 transition active:scale-95 cursor-pointer"
+                  >
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    <span>+ Agregar Adicional</span>
+                  </button>
+                </div>
+
+                <div id="contenedorInputsAdicionales" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  <!-- Se renderizan dinámicamente con JavaScript -->
                 </div>
               </div>
             </div>
@@ -376,27 +368,8 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
 
                 <div class="space-y-1.5 text-xs text-slate-600 pl-2">
                   <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wide">Propuestas y Módulos de mejora disponibles para incorporar cuando lo necesites:</span>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 pt-1">
-                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod1Titulo" class="text-slate-900 block font-bold text-xs">📸 Módulo de Fotos de Obra</strong>
-                      <span id="vistaPropMod1Desc" class="text-[11px] text-slate-500 block leading-tight">Subida y guardado en la nube de fotos del vano a sustituir.</span>
-                    </div>
-                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod2Titulo" class="text-slate-900 block font-bold text-xs">📄 Generador PDF Oficial con Logo</strong>
-                      <span id="vistaPropMod2Desc" class="text-[11px] text-slate-500 block leading-tight">Exportación de cotizaciones en hoja membretada PDF descargable.</span>
-                    </div>
-                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod3Titulo" class="text-slate-900 block font-bold text-xs">💰 Módulo de Señas & Cobranzas</strong>
-                      <span id="vistaPropMod3Desc" class="text-[11px] text-slate-500 block leading-tight">Control de señas del 50% recibidas y saldos pendientes.</span>
-                    </div>
-                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod4Titulo" class="text-slate-900 block font-bold text-xs">👥 CRM & Marketing de Clientes</strong>
-                      <span id="vistaPropMod4Desc" class="text-[11px] text-slate-500 block leading-tight">Base de datos para seguimiento de presupuestos y promociones.</span>
-                    </div>
-                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1 sm:col-span-2 lg:col-span-2">
-                      <strong id="vistaPropMod5Titulo" class="text-slate-900 block font-bold text-xs">🌐 Portal Web Abierto 24/7</strong>
-                      <span id="vistaPropMod5Desc" class="text-[11px] text-slate-500 block leading-tight">Cotizador público integrado a tu web o redes sociales para recibir solicitudes día y noche.</span>
-                    </div>
+                  <div id="contenedorVistaAdicionales" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 pt-1">
+                    <!-- Se renderizan dinámicamente con JavaScript -->
                   </div>
                 </div>
               </div>
@@ -608,7 +581,94 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       });
     }
 
-    // Sincronización en vivo de la Propuesta Formal (5 Módulos)
+    // Array Dinámico de Módulos Adicionales
+    let modulosAdicionales = [
+      { id: 1, titulo: '📸 Módulo de Fotos de Obra', desc: 'Subida y guardado en la nube de fotos del vano a sustituir.' },
+      { id: 2, titulo: '📄 Generador PDF Oficial con Logo', desc: 'Exportación de cotizaciones en hoja membretada PDF descargable.' },
+      { id: 3, titulo: '💰 Módulo de Señas & Cobranzas', desc: 'Control de señas del 50% recibidas y saldos pendientes.' },
+      { id: 4, titulo: '👥 CRM & Marketing de Clientes', desc: 'Base de datos para seguimiento de presupuestos y promociones.' },
+      { id: 5, titulo: '🌐 Portal Web Abierto 24/7', desc: 'Cotizador público integrado a tu web para recibir pedidos día y noche.' }
+    ];
+
+    // Renderizar inputs y vista previa de adicionales
+    function renderizarAdicionales() {
+      const contenedorInputs = document.getElementById('contenedorInputsAdicionales');
+      const contenedorVista = document.getElementById('contenedorVistaAdicionales');
+      if (!contenedorInputs || !contenedorVista) return;
+
+      // 1. Renderizar Inputs con botón de eliminar
+      contenedorInputs.innerHTML = modulosAdicionales.map((mod, idx) => `
+        <div class="relative bg-white border border-slate-300 rounded-xl p-2 shadow-2xs space-y-1">
+          <div class="flex items-center justify-between gap-1">
+            <input 
+              type="text" 
+              value="${mod.titulo}" 
+              oninput="actualizarDatoModulo(${mod.id}, 'titulo', this.value)"
+              placeholder="Título del adicional"
+              class="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:ring-1 focus:ring-agn-purple"
+            />
+            <button 
+              type="button" 
+              onclick="eliminarModuloAdicional(${mod.id})" 
+              title="Eliminar este adicional"
+              class="p-1 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition shrink-0 cursor-pointer"
+            >
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <input 
+            type="text" 
+            value="${mod.desc}" 
+            oninput="actualizarDatoModulo(${mod.id}, 'desc', this.value)"
+            placeholder="Descripción corta"
+            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[11px] text-slate-500 focus:outline-none focus:ring-1 focus:ring-agn-purple"
+          />
+        </div>
+      `).join('');
+
+      // 2. Renderizar Vista en la Hoja Membretada
+      if (modulosAdicionales.length === 0) {
+        contenedorVista.innerHTML = `
+          <div class="col-span-full p-2.5 bg-slate-50 rounded-lg border border-dashed border-slate-300 text-center text-slate-400 text-xs italic">
+            No se seleccionaron módulos adicionales para esta propuesta.
+          </div>
+        `;
+      } else {
+        contenedorVista.innerHTML = modulosAdicionales.map(mod => `
+          <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
+            <strong class="text-slate-900 block font-bold text-xs">${mod.titulo || 'Módulo Adicional'}</strong>
+            <span class="text-[11px] text-slate-500 block leading-tight">${mod.desc || 'Desarrollo a medida con precio cerrado.'}</span>
+          </div>
+        `).join('');
+      }
+
+      lucide.createIcons();
+    }
+
+    function actualizarDatoModulo(id, campo, valor) {
+      const mod = modulosAdicionales.find(m => m.id === id);
+      if (mod) {
+        mod[campo] = valor;
+        renderizarAdicionales();
+      }
+    }
+
+    function agregarModuloAdicional() {
+      const nuevoId = Date.now();
+      modulosAdicionales.push({
+        id: nuevoId,
+        titulo: '✨ Nuevo Módulo a Medida',
+        desc: 'Descripción de la funcionalidad personalizada.'
+      });
+      renderizarAdicionales();
+    }
+
+    function eliminarModuloAdicional(id) {
+      modulosAdicionales = modulosAdicionales.filter(m => m.id !== id);
+      renderizarAdicionales();
+    }
+
+    // Sincronización en vivo de la Propuesta Formal
     function actualizarHojaPropuesta() {
       const cliente = document.getElementById('inputPropCliente').value || '[Nombre del Cliente]';
       const rubro = document.getElementById('inputPropRubro').value || 'Gestión y Cotizaciones a Medida';
@@ -617,34 +677,12 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       const catalogo = document.getElementById('inputPropCatalogo').value;
       const reglas = document.getElementById('inputPropReglas').value;
 
-      const mod1T = document.getElementById('inputPropMod1Titulo').value;
-      const mod1D = document.getElementById('inputPropMod1Desc').value;
-      const mod2T = document.getElementById('inputPropMod2Titulo').value;
-      const mod2D = document.getElementById('inputPropMod2Desc').value;
-      const mod3T = document.getElementById('inputPropMod3Titulo').value;
-      const mod3D = document.getElementById('inputPropMod3Desc').value;
-      const mod4T = document.getElementById('inputPropMod4Titulo').value;
-      const mod4D = document.getElementById('inputPropMod4Desc').value;
-      const mod5T = document.getElementById('inputPropMod5Titulo').value;
-      const mod5D = document.getElementById('inputPropMod5Desc').value;
-
       document.getElementById('vistaPropCliente').innerText = cliente;
       document.getElementById('vistaPropRubro').innerText = rubro;
       document.getElementById('vistaPropSetup').innerText = setup;
       document.getElementById('vistaPropAbono').innerText = abono;
       document.getElementById('vistaPropCatalogo').innerText = catalogo;
       document.getElementById('vistaPropReglas').innerText = reglas;
-
-      document.getElementById('vistaPropMod1Titulo').innerText = mod1T;
-      document.getElementById('vistaPropMod1Desc').innerText = mod1D;
-      document.getElementById('vistaPropMod2Titulo').innerText = mod2T;
-      document.getElementById('vistaPropMod2Desc').innerText = mod2D;
-      document.getElementById('vistaPropMod3Titulo').innerText = mod3T;
-      document.getElementById('vistaPropMod3Desc').innerText = mod3D;
-      document.getElementById('vistaPropMod4Titulo').innerText = mod4T;
-      document.getElementById('vistaPropMod4Desc').innerText = mod4D;
-      document.getElementById('vistaPropMod5Titulo').innerText = mod5T;
-      document.getElementById('vistaPropMod5Desc').innerText = mod5D;
     }
 
     function restablecerValoresBase() {
@@ -655,18 +693,16 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       document.getElementById('inputPropCatalogo').value = 'Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).';
       document.getElementById('inputPropReglas').value = 'Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra. Mensaje formal estructurado con 15 días de validez y 50% de seña.';
 
-      document.getElementById('inputPropMod1Titulo').value = '📸 Módulo de Fotos de Obra';
-      document.getElementById('inputPropMod1Desc').value = 'Subida y guardado en la nube de fotos del vano a sustituir.';
-      document.getElementById('inputPropMod2Titulo').value = '📄 Generador PDF Oficial con Logo';
-      document.getElementById('inputPropMod2Desc').value = 'Exportación de cotizaciones en hoja membretada PDF descargable.';
-      document.getElementById('inputPropMod3Titulo').value = '💰 Módulo de Señas & Cobranzas';
-      document.getElementById('inputPropMod3Desc').value = 'Control de señas del 50% recibidas y saldos pendientes.';
-      document.getElementById('inputPropMod4Titulo').value = '👥 CRM & Marketing de Clientes';
-      document.getElementById('inputPropMod4Desc').value = 'Base de datos para seguimiento de presupuestos y promociones.';
-      document.getElementById('inputPropMod5Titulo').value = '🌐 Portal Web Abierto 24/7';
-      document.getElementById('inputPropMod5Desc').value = 'Cotizador público integrado a tu web o redes sociales para recibir solicitudes día y noche.';
+      modulosAdicionales = [
+        { id: 1, titulo: '📸 Módulo de Fotos de Obra', desc: 'Subida y guardado en la nube de fotos del vano a sustituir.' },
+        { id: 2, titulo: '📄 Generador PDF Oficial con Logo', desc: 'Exportación de cotizaciones en hoja membretada PDF descargable.' },
+        { id: 3, titulo: '💰 Módulo de Señas & Cobranzas', desc: 'Control de señas del 50% recibidas y saldos pendientes.' },
+        { id: 4, titulo: '👥 CRM & Marketing de Clientes', desc: 'Base de datos para seguimiento de presupuestos y promociones.' },
+        { id: 5, titulo: '🌐 Portal Web Abierto 24/7', desc: 'Cotizador público integrado a tu web para recibir pedidos día y noche.' }
+      ];
 
       actualizarHojaPropuesta();
+      renderizarAdicionales();
     }
 
     // Copiar Propuesta Formal en formato texto limpio con los valores actuales
@@ -678,16 +714,9 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       const catalogo = document.getElementById('inputPropCatalogo').value;
       const reglas = document.getElementById('inputPropReglas').value;
 
-      const mod1T = document.getElementById('inputPropMod1Titulo').value;
-      const mod1D = document.getElementById('inputPropMod1Desc').value;
-      const mod2T = document.getElementById('inputPropMod2Titulo').value;
-      const mod2D = document.getElementById('inputPropMod2Desc').value;
-      const mod3T = document.getElementById('inputPropMod3Titulo').value;
-      const mod3D = document.getElementById('inputPropMod3Desc').value;
-      const mod4T = document.getElementById('inputPropMod4Titulo').value;
-      const mod4D = document.getElementById('inputPropMod4Desc').value;
-      const mod5T = document.getElementById('inputPropMod5Titulo').value;
-      const mod5D = document.getElementById('inputPropMod5Desc').value;
+      const listaAdicionalesTexto = modulosAdicionales.length > 0
+        ? modulosAdicionales.map(m => `*${m.titulo}:* ${m.desc}`).join('\n')
+        : '_(No se incluyeron adicionales en esta propuesta inicial)._';
 
       const textoPropuesta = `*GRUPO AGN | Propuesta Comercial*
 *Cliente:* ${cliente}
@@ -703,11 +732,7 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
 *CUALQUIER FUNCIONALIDAD ADICIONAL O IDEA QUE TENGAS PARA TU NEGOCIO SE PUEDE DESARROLLAR A MEDIDA CON PRECIO CERRADO LLAVE EN MANO.*
 
 Módulos sugeridos para incorporar cuando lo necesites:
-*${mod1T}:* ${mod1D}
-*${mod2T}:* ${mod2D}
-*${mod3T}:* ${mod3D}
-*${mod4T}:* ${mod4D}
-*${mod5T}:* ${mod5D}
+${listaAdicionalesTexto}
 
 *3️⃣ INVERSIÓN Y PLAZOS*
 • *Setup Inicial (Pago Único):* USD ${setup} (digitalización de fórmulas, configuración de catálogo y puesta en marcha).
@@ -715,6 +740,7 @@ Módulos sugeridos para incorporar cuando lo necesites:
 • *Plazo de Entrega:* 5 a 7 días hábiles tras recibir planillas base.
 
 *Grupo AGN • Soluciones Web & Mobile a Medida*
+contacto@grupoagn.com`;
 contacto@grupoagn.com`;
 
       navigator.clipboard.writeText(textoPropuesta).then(() => {
@@ -786,6 +812,12 @@ contacto@grupoagn.com`;
         if (btn) btn.innerText = 'Descargar PDF';
       });
     }
+
+    // Inicializar Propuesta al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      renderizarAdicionales();
+      actualizarHojaPropuesta();
+    });
   </script>
 </body>
 </html>
