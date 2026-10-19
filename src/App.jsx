@@ -14,7 +14,9 @@ import {
   CheckCircle2,
   ChevronDown,
   MessageCircle,
-  HelpCircle
+  HelpCircle,
+  Image as ImageIcon,
+  FileDown
 } from 'lucide-react';
 import { UNIVERSAL_RUBROS, calcularCotizacionUniversal } from './pricingConfig';
 
@@ -459,7 +461,7 @@ export default function App() {
                 </div>
 
                 {/* Gran Total */}
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50/40 rounded-2xl p-4 border border-purple-100 text-center space-y-1">
+                <div id="tarjetaPresupuestoVisual" className="bg-gradient-to-r from-purple-50 to-pink-50/40 rounded-2xl p-4 border border-purple-100 text-center space-y-1">
                   <span className="text-[10px] uppercase font-bold text-[#4a208e] tracking-wider block">
                     Total al Cliente ({moneda})
                   </span>
@@ -475,15 +477,39 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Botón Verde WhatsApp */}
+                {/* Botón Principal Verde WhatsApp */}
                 <button
                   type="button"
                   onClick={handleEnviarWhatsApp}
-                  className="w-full bg-[#25D366] hover:bg-[#20ba59] active:scale-98 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl shadow-md shadow-emerald-900/10 flex items-center justify-center gap-2 text-sm transition-all min-h-[48px]"
+                  className="w-full bg-[#25D366] hover:bg-[#20ba59] active:scale-98 text-slate-900 font-extrabold py-3.5 px-4 rounded-2xl shadow-md shadow-emerald-900/10 flex items-center justify-center gap-2 text-sm transition-all min-h-[48px] cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>Enviar Presupuesto por WhatsApp</span>
                 </button>
+
+                {/* Botones Secundarios: Descargar Imagen & PDF */}
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      alert('📸 Función de Imagen PNG de Presupuesto: Disponible como Módulo Adicional a Medida para exportar la cotización con membrete y foto ilustrativa.');
+                    }}
+                    className="py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 active:scale-95 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <ImageIcon className="w-3.5 h-3.5 text-purple-600" />
+                    <span>Guardar Imagen</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      alert('📄 Función de PDF Oficial: Disponible como Módulo Adicional a Medida para exportar el presupuesto formal con membrete y logo de la empresa.');
+                    }}
+                    className="py-2.5 px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 active:scale-95 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <FileDown className="w-3.5 h-3.5 text-red-600" />
+                    <span>Descargar PDF</span>
+                  </button>
+                </div>
 
                 <p className="text-[10px] text-slate-400 text-center">
                   Abre WhatsApp con el mensaje formal estructurado y listo para enviar.
