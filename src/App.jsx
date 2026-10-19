@@ -145,15 +145,19 @@ export default function App() {
       
       {/* 1. Header Corporativo Grupo AGN */}
       <header className="bg-gradient-to-r from-[#2c1256] via-[#4a208e] to-[#5a207e] text-white shadow-lg sticky top-0 z-40 border-b border-purple-800/40">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="font-black text-lg sm:text-xl tracking-tight text-white">GRUPO AGN</span>
-              <span className="bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white text-[9px] sm:text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-xs">
+        <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <img 
+              src="./logo-grupo-agn.webp" 
+              alt="Grupo AGN" 
+              className="h-8 sm:h-9 w-auto object-contain drop-shadow-sm" 
+            />
+            <div className="flex flex-col">
+              <span className="bg-gradient-to-r from-[#e6007e] to-[#cb69fc] text-white text-[9px] sm:text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full shadow-xs w-fit">
                 Web & Mobile
               </span>
+              <span className="text-[10px] sm:text-[11px] text-purple-200 font-medium hidden sm:block">Aplicaciones Web a Medida para PyMEs</span>
             </div>
-            <span className="text-[10px] sm:text-[11px] text-purple-200 font-medium">Aplicaciones Web a Medida para PyMEs</span>
           </div>
 
           <button
@@ -349,40 +353,48 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Interruptor de Colocación en Obra + Aviso de Foto de Sustitución */}
+                {/* Interruptor de Colocación en Obra (Switch iOS Protagónico) */}
                 <div className="space-y-2">
-                  <label className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all cursor-pointer min-h-[52px] ${
-                    cotizadorForm.incluyeServicio 
-                      ? 'bg-purple-50/80 border-[#4a208e] shadow-xs' 
-                      : 'bg-slate-50 border-slate-200'
-                  }`}>
+                  <div 
+                    onClick={() => setCotizadorForm({ ...cotizadorForm, incluyeServicio: !cotizadorForm.incluyeServicio })}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border-2 transition-all cursor-pointer select-none min-h-[58px] ${
+                      cotizadorForm.incluyeServicio 
+                        ? 'bg-purple-50 border-[#4a208e] shadow-sm' 
+                        : 'bg-slate-50 border-slate-300 hover:border-slate-400'
+                    }`}
+                  >
                     <div className="flex items-center gap-3">
-                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${
-                        cotizadorForm.incluyeServicio ? 'bg-[#4a208e] text-white' : 'bg-slate-200 text-slate-500'
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base transition-colors ${
+                        cotizadorForm.incluyeServicio ? 'bg-[#4a208e] text-white shadow-xs' : 'bg-slate-200 text-slate-500'
                       }`}>
                         🔧
                       </div>
                       <div className="text-xs">
-                        <span className="font-bold text-slate-900 block">{rubroActual.servicioLabel}</span>
-                        <span className="text-slate-500">
-                          {cotizadorForm.incluyeServicio ? 'Instalación y mano de obra en obra' : 'Sin colocación (Retiro en taller)'}
+                        <span className="font-extrabold text-slate-900 block text-sm">{rubroActual.servicioLabel}</span>
+                        <span className="text-slate-500 font-medium">
+                          {cotizadorForm.incluyeServicio ? 'Mano de obra y colocación incluida' : 'Sin colocación (Retiro en taller)'}
                         </span>
                       </div>
                     </div>
-                    <input
-                      type="checkbox"
-                      checked={cotizadorForm.incluyeServicio}
-                      onChange={(e) => setCotizadorForm({ ...cotizadorForm, incluyeServicio: e.target.checked })}
-                      className="w-5 h-5 text-[#4a208e] rounded-lg accent-[#4a208e] cursor-pointer"
-                    />
-                  </label>
+
+                    {/* Switch Táctil Estilo iOS */}
+                    <div className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0 ${
+                      cotizadorForm.incluyeServicio ? 'bg-[#4a208e]' : 'bg-slate-300'
+                    }`}>
+                      <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center text-[10px] font-bold ${
+                        cotizadorForm.incluyeServicio ? 'translate-x-6 text-[#4a208e]' : 'translate-x-0 text-slate-400'
+                      }`}>
+                        {cotizadorForm.incluyeServicio ? 'SÍ' : 'NO'}
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Banner de Recordatorio de Foto si hay Colocación */}
                   {cotizadorForm.incluyeServicio && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-start gap-2.5 text-amber-900 animate-fadeIn">
-                      <span className="text-base leading-none">📸</span>
-                      <p className="text-[11px] leading-tight font-medium">
-                        <strong className="font-bold">Recordatorio:</strong> Al enviar el presupuesto por WhatsApp, se le solicitará al cliente una foto del vano o abertura a sustituir para validar la colocación.
+                    <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 flex items-start gap-2.5 text-amber-950 animate-fadeIn shadow-xs">
+                      <span className="text-lg leading-none shrink-0">📸</span>
+                      <p className="text-xs leading-snug font-medium">
+                        <strong className="font-bold text-amber-900">Foto para colocación:</strong> Al enviar el presupuesto por WhatsApp, el sistema le recordará al cliente enviar una foto del vano o abertura a sustituir.
                       </p>
                     </div>
                   )}
