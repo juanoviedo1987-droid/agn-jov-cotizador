@@ -280,8 +280,8 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                   <textarea id="inputPropCatalogo" rows="2" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple resize-none">Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).</textarea>
                 </div>
                 <div>
-                  <label class="block font-bold text-slate-600 mb-1">Reglas de Taller y Presupuesto</label>
-                  <textarea id="inputPropReglas" rows="2" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple resize-none">Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra. Mensaje formal estructurado con 15 días de validez y 50% de seña.</textarea>
+                  <label class="block font-bold text-slate-600 mb-1">Reglas de Taller y Presupuestos (WhatsApp + PDF)</label>
+                  <textarea id="inputPropReglas" rows="2" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple resize-none">Cálculo por medidas, recargos de series y switch de colocación. Generación instantánea de Presupuesto para WhatsApp y Documento PDF Membretado Oficial con logo y datos de tu empresa incluido (15 días validez, 50% seña).</textarea>
                 </div>
               </div>
 
@@ -581,13 +581,12 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       });
     }
 
-    // Array Dinámico de Módulos Adicionales
+    // Array Dinámico de Módulos Adicionales (El PDF ya está incluido en la App Base)
     let modulosAdicionales = [
-      { id: 1, titulo: '📸 Módulo de Fotos de Obra', desc: 'Subida y guardado en la nube de fotos del vano a sustituir.' },
-      { id: 2, titulo: '📄 Generador PDF Oficial con Logo', desc: 'Exportación de cotizaciones en hoja membretada PDF descargable.' },
-      { id: 3, titulo: '💰 Módulo de Señas & Cobranzas', desc: 'Control de señas del 50% recibidas y saldos pendientes.' },
-      { id: 4, titulo: '👥 CRM & Marketing de Clientes', desc: 'Base de datos para seguimiento de presupuestos y promociones.' },
-      { id: 5, titulo: '🌐 Portal Web Abierto 24/7', desc: 'Cotizador público integrado a tu web para recibir pedidos día y noche.' }
+      { id: 1, titulo: '📸 Módulo de Fotos de Obra', desc: 'Subida y guardado en servidor en la nube de fotos del vano a sustituir.' },
+      { id: 2, titulo: '💰 Módulo de Señas & Cobranzas', desc: 'Control de pagos recibidos, señas del 50% y saldos pendientes.' },
+      { id: 3, titulo: '👥 CRM & Marketing de Clientes', desc: 'Base de datos para seguimiento de presupuestos y promociones por WhatsApp.' },
+      { id: 4, titulo: '🌐 Portal Web Abierto 24/7', desc: 'Cotizador público integrado a tu web para recibir pedidos día y noche.' }
     ];
 
     // Renderizar inputs y vista previa de adicionales
