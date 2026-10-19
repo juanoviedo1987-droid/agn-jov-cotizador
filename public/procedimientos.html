@@ -371,38 +371,50 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                    <span class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs">
-                      <span>📐</span> Catálogo & Fórmulas Digitalizadas
-                    </span>
-                    <p id="vistaPropCatalogo" class="text-slate-600 text-[11px] leading-relaxed">
+                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-purple-100 text-agn-purple flex items-center justify-center shrink-0">
+                        <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="font-extrabold text-slate-900 text-xs">Catálogo & Fórmulas Digitalizadas</span>
+                    </div>
+                    <p id="vistaPropCatalogo" class="text-slate-600 text-[11px] leading-relaxed pl-8">
                       Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).
                     </p>
                   </div>
 
-                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                    <span class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs">
-                      <span>⚡</span> Motor de Taller & Presupuestos (WhatsApp + PDF)
-                    </span>
-                    <p id="vistaPropReglas" class="text-slate-600 text-[11px] leading-relaxed">
+                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="font-extrabold text-slate-900 text-xs">Motor de Taller & Presupuestos (WhatsApp + PDF)</span>
+                    </div>
+                    <p id="vistaPropReglas" class="text-slate-600 text-[11px] leading-relaxed pl-8">
                       Cálculo por medidas, recargos de series y switch de colocación. Generación instantánea de Presupuesto para WhatsApp y Documento PDF Membretado Oficial con logo y datos de tu empresa incluido (15 días validez, 50% seña).
                     </p>
                   </div>
 
-                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                    <span class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs">
-                      <span>📱</span> Multi-dispositivo Mobile-First
-                    </span>
-                    <p class="text-slate-600 text-[11px] leading-relaxed">
+                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                        <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="font-extrabold text-slate-900 text-xs">Multi-dispositivo Mobile-First</span>
+                    </div>
+                    <p class="text-slate-600 text-[11px] leading-relaxed pl-8">
                       Acceso sin límites para celulares de operarios, vendedores y computadoras de mostrador. Sin instalaciones pesadas ni licencias caras por usuario.
                     </p>
                   </div>
 
-                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                    <span class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs">
-                      <span>☁️</span> Planilla Autogestionable en la Nube
-                    </span>
-                    <p class="text-slate-600 text-[11px] leading-relaxed">
+                  <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                        <i data-lucide="cloud" class="w-3.5 h-3.5"></i>
+                      </div>
+                      <span class="font-extrabold text-slate-900 text-xs">Planilla Autogestionable en la Nube</span>
+                    </div>
+                    <p class="text-slate-600 text-[11px] leading-relaxed pl-8">
                       Actualizá tus precios de venta en 1 minuto cuando aumentan los costos de proveedores, impactando al instante en todo tu equipo.
                     </p>
                   </div>
@@ -429,7 +441,7 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                   La solución base cubre el 100% de tu operatoria diaria. Al ser un desarrollo a medida sobre arquitectura moderna, tu plataforma está lista para que el día de mañana podamos conectar <strong>módulos de expansión a precio cerrado</strong> sin tener que rehacer nada:
                 </p>
 
-                <div id="contenedorVistaAdicionales" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-1">
+                <div id="contenedorVistaAdicionales" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                   <!-- Se renderizan dinámicamente con JavaScript -->
                 </div>
               </div>
@@ -706,9 +718,9 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
         `;
       } else {
         contenedorVista.innerHTML = modulosAdicionales.map(mod => `
-          <div class="p-2.5 bg-white/90 rounded-xl border border-purple-100 shadow-2xs space-y-0.5">
-            <strong class="text-slate-900 block font-bold text-xs truncate">${mod.titulo || 'Módulo Adicional'}</strong>
-            <span class="text-[10px] text-slate-500 block leading-tight">${mod.desc || 'Desarrollo a medida con precio cerrado.'}</span>
+          <div class="p-3 bg-white rounded-xl border border-purple-200/80 shadow-2xs space-y-1">
+            <strong class="text-slate-900 block font-bold text-xs leading-normal">${mod.titulo || 'Módulo Adicional'}</strong>
+            <span class="text-[11px] text-slate-600 block leading-relaxed">${mod.desc || 'Desarrollo a medida con precio cerrado.'}</span>
           </div>
         `).join('');
       }
@@ -834,7 +846,21 @@ contacto@grupoagn.com`;
       const btn = document.getElementById('btnDescargarImg');
       if (btn) btn.innerText = 'Generando...';
 
-      html2canvas(elemento, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+      const opciones = {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        onclone: (clonedDoc) => {
+          const el = clonedDoc.getElementById('hojaPropuestaFormal');
+          if (el) {
+            el.style.width = '820px';
+            el.style.maxWidth = '820px';
+          }
+        }
+      };
+
+      html2canvas(elemento, opciones).then(canvas => {
         const link = document.createElement('a');
         link.download = `Propuesta_Comercial_AGN_${cliente}.png`;
         link.href = canvas.toDataURL('image/png');
@@ -860,7 +886,21 @@ contacto@grupoagn.com`;
       const btn = document.getElementById('btnDescargarPDF');
       if (btn) btn.innerText = 'Generando PDF...';
 
-      html2canvas(elemento, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+      const opciones = {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        onclone: (clonedDoc) => {
+          const el = clonedDoc.getElementById('hojaPropuestaFormal');
+          if (el) {
+            el.style.width = '820px';
+            el.style.maxWidth = '820px';
+          }
+        }
+      };
+
+      html2canvas(elemento, opciones).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
