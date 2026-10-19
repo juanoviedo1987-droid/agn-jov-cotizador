@@ -205,23 +205,23 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
           </div>
         </div>
 
-        <!-- ================= SECCIÓN 2: MODELO DE PROPUESTA FORMAL (PDF / MEMBRETE) ================= -->
+        <!-- ================= SECCIÓN 2: GENERADOR DE PROPUESTAS A MEDIDA ================= -->
         <div id="sec-propuesta-formal" class="seccion-content hidden space-y-6">
           <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
             
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
               <div>
                 <span class="text-[10px] font-extrabold uppercase tracking-wider text-agn-magenta bg-pink-50 border border-pink-200 px-2.5 py-0.5 rounded-full inline-block mb-1">
-                  Plantilla Oficial de Cierre
+                  Generador Adaptable a Medida
                 </span>
-                <h2 class="text-xl sm:text-2xl font-black text-slate-900">Modelo de Propuesta Formal (1 Carilla)</h2>
-                <p class="text-xs sm:text-sm text-slate-500">Formato ejecutivo para enviar en PDF por WhatsApp o presentar en persona.</p>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900">Propuesta Comercial Editable en Vivo</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Completá los campos o dejá los valores base. La hoja membretada se actualiza en tiempo real.</p>
               </div>
 
               <div class="flex items-center gap-2">
-                <button onclick="copiarPropuestaFormal()" class="px-4 py-2 bg-gradient-to-r from-agn-purple to-agn-magenta hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-2 transition active:scale-95 cursor-pointer">
+                <button onclick="copiarPropuestaFormal()" class="px-4 py-2.5 bg-gradient-to-r from-agn-purple to-agn-magenta hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-2 transition active:scale-95 cursor-pointer">
                   <i data-lucide="copy" class="w-4 h-4"></i>
-                  <span id="btnCopiarPropuestaTexto">Copiar Texto de Propuesta</span>
+                  <span id="btnCopiarPropuestaTexto">Copiar Propuesta Adaptada</span>
                 </button>
               </div>
             </div>
@@ -229,10 +229,71 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
             <!-- Toast de confirmación de propuesta -->
             <div id="toastPropuestaCopiada" class="hidden p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-800 text-xs font-bold flex items-center gap-2">
               <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
-              <span>¡Propuesta copiada al portapapeles! Lista para pegar en Word, Docs o WhatsApp.</span>
+              <span>¡Propuesta copiada al portapapeles con tus datos actuales! Lista para pegar.</span>
             </div>
 
-            <!-- HOJA MEMBRETADA VISUAL (ESTILO EJECUTIVO GRUPO AGN) -->
+            <!-- PANEL DE CONTROL / CAMPOS EDITABLES -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+                  <i data-lucide="sliders" class="w-4 h-4 text-agn-purple"></i> Datos de la Propuesta (Editá lo que quieras)
+                </span>
+                <button onclick="restablecerValoresBase()" class="text-[11px] font-bold text-agn-purple hover:underline cursor-pointer">
+                  Restablecer Base
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Cliente / Empresa</label>
+                  <input type="text" id="inputPropCliente" value="CD Aluminio" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Rubro / Solución</label>
+                  <input type="text" id="inputPropRubro" value="Aberturas de aluminio y cerramientos" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Precio Setup (USD)</label>
+                  <input type="text" id="inputPropSetup" value="250" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple" />
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Abono Mensual (USD)</label>
+                  <input type="text" id="inputPropAbono" value="30" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Alcance del Catálogo Base</label>
+                  <textarea id="inputPropCatalogo" rows="2" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple resize-none">Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).</textarea>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-600 mb-1">Reglas de Taller y Presupuesto</label>
+                  <textarea id="inputPropReglas" rows="2" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-agn-purple resize-none">Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra. Mensaje formal estructurado con 15 días de validez y 50% de seña.</textarea>
+                </div>
+              </div>
+
+              <!-- Selector de Adicionales Sugeridos -->
+              <div class="space-y-1.5 pt-1 text-xs">
+                <span class="block font-bold text-slate-700">Módulos Adicionales para Tentar al Cliente (Editables):</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <div>
+                    <input type="text" id="inputPropMod1Titulo" value="💰 Señas & Cobranzas" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod1Desc" value="Control de señas del 50% y saldos pendientes." oninput="actualizarHojaPropuesta()" class="w-full bg-white border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                  </div>
+                  <div>
+                    <input type="text" id="inputPropMod2Titulo" value="👥 CRM & Marketing" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod2Desc" value="Base de datos de clientes para seguimiento y promos." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                  </div>
+                  <div>
+                    <input type="text" id="inputPropMod3Titulo" value="🌐 Portal Web Público 24/7" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod3Desc" value="Cotizador abierto en tu web para recibir pedidos día y noche." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- HOJA MEMBRETADA VISUAL REACTIVA (ESTILO EJECUTIVO GRUPO AGN) -->
             <div id="hojaPropuestaFormal" class="bg-white border-2 border-purple-100 rounded-2xl p-6 sm:p-8 shadow-md text-xs sm:text-sm text-slate-800 space-y-5 relative overflow-hidden">
               <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-agn-dark via-agn-purple to-agn-magenta"></div>
 
@@ -251,29 +312,28 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                 </div>
               </div>
 
-              <!-- Destinatario -->
+              <!-- Destinatario Reactivo -->
               <div class="bg-purple-50/60 border border-purple-100 rounded-xl p-3.5 flex flex-col sm:flex-row justify-between gap-2">
                 <div>
                   <span class="text-[10px] uppercase font-bold text-agn-purple tracking-wider block">Cliente / Empresa:</span>
-                  <strong class="text-sm font-black text-slate-900 block">[Nombre del Cliente / Ej: CD Aluminio]</strong>
-                  <span class="text-[11px] text-slate-600">Montevideo, Uruguay</span>
+                  <strong id="vistaPropCliente" class="text-sm font-black text-slate-900 block">CD Aluminio</strong>
+                  <span id="vistaPropRubro" class="text-[11px] text-slate-600">Aberturas de aluminio y cerramientos</span>
                 </div>
                 <div class="sm:text-right">
                   <span class="text-[10px] uppercase font-bold text-agn-purple tracking-wider block">Solución Requerida:</span>
-                  <span class="font-bold text-slate-800 text-xs">Sistema Cotizador Web Móvil & Taller</span>
+                  <span class="font-bold text-slate-800 text-xs">Sistema Cotizador Web Móvil & Gestión</span>
                 </div>
               </div>
 
-              <!-- 1. Alcance de la Aplicación Base -->
+              <!-- 1. Alcance de la Aplicación Base Reactivo -->
               <div class="space-y-2">
                 <div class="flex items-center gap-2 text-agn-purple font-black text-xs uppercase tracking-wider">
                   <span class="w-5 h-5 rounded-lg bg-purple-100 text-agn-purple flex items-center justify-center text-[11px]">1</span>
                   <span>¿Qué Incluye la Aplicación Base?</span>
                 </div>
                 <ul class="space-y-1.5 pl-7 list-disc text-slate-700 text-xs sm:text-[13px]">
-                  <li><strong>Digitalización completa de tu catálogo de productos y carpintería:</strong> Aberturas, mamparas, líneas completas con todas sus medidas (ancho × alto), colores de perfilería y selección de cristales.</li>
-                  <li><strong>Fórmulas y reglas de taller automáticas:</strong> Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra.</li>
-                  <li><strong>Generación de Presupuesto Formal al instante (WhatsApp / Visual):</strong> Mensaje membretado con resumen técnico, plazo de validez de la oferta (15 días) y condiciones de pago (50% de seña para mandar a fabricar, saldo contra entrega).</li>
+                  <li><strong id="vistaPropCatalogo">Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).</strong></li>
+                  <li id="vistaPropReglas">Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra. Mensaje formal estructurado con 15 días de validez y 50% de seña.</li>
                   <li><strong>Acceso Multiusuario Mobile-First:</strong> Funciona directo en celulares (dueño y personal del taller) y en computadoras de mostrador sin instalaciones pesadas.</li>
                 </ul>
                 <div class="pl-7 text-[11px] text-slate-500 italic">
@@ -296,22 +356,22 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                   <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wide">Propuestas y Módulos de mejora disponibles para incorporar cuando lo necesites:</span>
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong class="text-slate-900 block font-bold text-xs">💰 Módulo de Señas & Cobranzas</strong>
-                      <span class="text-[11px] text-slate-500 block leading-tight">Control de pagos recibidos, señas del 50% y saldos pendientes de cobro por cliente.</span>
+                      <strong id="vistaPropMod1Titulo" class="text-slate-900 block font-bold text-xs">💰 Señas & Cobranzas</strong>
+                      <span id="vistaPropMod1Desc" class="text-[11px] text-slate-500 block leading-tight">Control de señas del 50% y saldos pendientes.</span>
                     </div>
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong class="text-slate-900 block font-bold text-xs">👥 CRM de Clientes & Marketing</strong>
-                      <span class="text-[11px] text-slate-500 block leading-tight">Base de datos de consultas para seguimiento comercial, avisos automáticos y promociones.</span>
+                      <strong id="vistaPropMod2Titulo" class="text-slate-900 block font-bold text-xs">👥 CRM & Marketing</strong>
+                      <span id="vistaPropMod2Desc" class="text-[11px] text-slate-500 block leading-tight">Base de datos de clientes para seguimiento y promos.</span>
                     </div>
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong class="text-slate-900 block font-bold text-xs">🌐 Portal Web Público 24/7</strong>
-                      <span class="text-[11px] text-slate-500 block leading-tight">Cotizador abierto en tu página web o redes sociales para que el público pida cotización día y noche.</span>
+                      <strong id="vistaPropMod3Titulo" class="text-slate-900 block font-bold text-xs">🌐 Portal Web Público 24/7</strong>
+                      <span id="vistaPropMod3Desc" class="text-[11px] text-slate-500 block leading-tight">Cotizador abierto en tu web para recibir pedidos día y noche.</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- 3. Inversión y Plazos -->
+              <!-- 3. Inversión y Plazos Reactivos -->
               <div class="space-y-2 border-t border-slate-200 pt-3">
                 <div class="flex items-center gap-2 text-emerald-800 font-black text-xs uppercase tracking-wider">
                   <span class="w-5 h-5 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-[11px]">3</span>
@@ -321,13 +381,13 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div class="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl">
                     <span class="text-[10px] uppercase font-bold text-emerald-800 block">Setup Inicial (Pago Único):</span>
-                    <span class="text-2xl font-black text-slate-900">USD 250</span>
+                    <span class="text-2xl font-black text-slate-900">USD <span id="vistaPropSetup">250</span></span>
                     <span class="text-[11px] text-slate-600 block mt-0.5">Digitalización de fórmulas, configuración de catálogo y puesta en marcha.</span>
                   </div>
 
                   <div class="p-3 bg-purple-50/70 border border-purple-200 rounded-xl">
                     <span class="text-[10px] uppercase font-bold text-agn-purple block">Abono Mensual de Soporte:</span>
-                    <span class="text-2xl font-black text-slate-900">USD 30 <span class="text-xs font-semibold text-slate-500">/ mes</span></span>
+                    <span class="text-2xl font-black text-slate-900">USD <span id="vistaPropAbono">30</span> <span class="text-xs font-semibold text-slate-500">/ mes</span></span>
                     <span class="text-[11px] text-slate-600 block mt-0.5">Alojamiento en la nube de alta disponibilidad, actualizaciones de precios de listas y soporte continuo.</span>
                   </div>
                 </div>
@@ -518,31 +578,96 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       });
     }
 
-    // Copiar Propuesta Formal en formato texto limpio
+    // Sincronización en vivo de la Propuesta Formal
+    function actualizarHojaPropuesta() {
+      const cliente = document.getElementById('inputPropCliente').value || '[Nombre del Cliente]';
+      const rubro = document.getElementById('inputPropRubro').value || 'Gestión y Cotizaciones a Medida';
+      const setup = document.getElementById('inputPropSetup').value || '250';
+      const abono = document.getElementById('inputPropAbono').value || '30';
+      const catalogo = document.getElementById('inputPropCatalogo').value;
+      const reglas = document.getElementById('inputPropReglas').value;
+
+      const mod1T = document.getElementById('inputPropMod1Titulo').value;
+      const mod1D = document.getElementById('inputPropMod1Desc').value;
+      const mod2T = document.getElementById('inputPropMod2Titulo').value;
+      const mod2D = document.getElementById('inputPropMod2Desc').value;
+      const mod3T = document.getElementById('inputPropMod3Titulo').value;
+      const mod3D = document.getElementById('inputPropMod3Desc').value;
+
+      document.getElementById('vistaPropCliente').innerText = cliente;
+      document.getElementById('vistaPropRubro').innerText = rubro;
+      document.getElementById('vistaPropSetup').innerText = setup;
+      document.getElementById('vistaPropAbono').innerText = abono;
+      document.getElementById('vistaPropCatalogo').innerText = catalogo;
+      document.getElementById('vistaPropReglas').innerText = reglas;
+
+      document.getElementById('vistaPropMod1Titulo').innerText = mod1T;
+      document.getElementById('vistaPropMod1Desc').innerText = mod1D;
+      document.getElementById('vistaPropMod2Titulo').innerText = mod2T;
+      document.getElementById('vistaPropMod2Desc').innerText = mod2D;
+      document.getElementById('vistaPropMod3Titulo').innerText = mod3T;
+      document.getElementById('vistaPropMod3Desc').innerText = mod3D;
+    }
+
+    function restablecerValoresBase() {
+      document.getElementById('inputPropCliente').value = 'CD Aluminio';
+      document.getElementById('inputPropRubro').value = 'Aberturas de aluminio y cerramientos';
+      document.getElementById('inputPropSetup').value = '250';
+      document.getElementById('inputPropAbono').value = '30';
+      document.getElementById('inputPropCatalogo').value = 'Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).';
+      document.getElementById('inputPropReglas').value = 'Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra. Mensaje formal estructurado con 15 días de validez y 50% de seña.';
+
+      document.getElementById('inputPropMod1Titulo').value = '💰 Señas & Cobranzas';
+      document.getElementById('inputPropMod1Desc').value = 'Control de señas del 50% y saldos pendientes.';
+      document.getElementById('inputPropMod2Titulo').value = '👥 CRM & Marketing';
+      document.getElementById('inputPropMod2Desc').value = 'Base de datos de clientes para seguimiento y promos.';
+      document.getElementById('inputPropMod3Titulo').value = '🌐 Portal Web Público 24/7';
+      document.getElementById('inputPropMod3Desc').value = 'Cotizador abierto en tu web para recibir pedidos día y noche.';
+
+      actualizarHojaPropuesta();
+    }
+
+    // Copiar Propuesta Formal en formato texto limpio con los valores actuales
     function copiarPropuestaFormal() {
+      const cliente = document.getElementById('inputPropCliente').value || '[Nombre del Cliente]';
+      const rubro = document.getElementById('inputPropRubro').value || 'Gestión y Cotizaciones';
+      const setup = document.getElementById('inputPropSetup').value || '250';
+      const abono = document.getElementById('inputPropAbono').value || '30';
+      const catalogo = document.getElementById('inputPropCatalogo').value;
+      const reglas = document.getElementById('inputPropReglas').value;
+
+      const mod1T = document.getElementById('inputPropMod1Titulo').value;
+      const mod1D = document.getElementById('inputPropMod1Desc').value;
+      const mod2T = document.getElementById('inputPropMod2Titulo').value;
+      const mod2D = document.getElementById('inputPropMod2Desc').value;
+      const mod3T = document.getElementById('inputPropMod3Titulo').value;
+      const mod3D = document.getElementById('inputPropMod3Desc').value;
+
       const textoPropuesta = `*GRUPO AGN | Propuesta Comercial*
-*Sistema Cotizador Web Móvil & Taller*
+*Cliente:* ${cliente}
+*Solución:* Sistema Cotizador Web Móvil & Gestión (${rubro})
 
 *1️⃣ ¿QUÉ INCLUYE LA APLICACIÓN BASE?*
-• Digitalización completa de tu catálogo de productos y carpintería (Aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).
-• Fórmulas y reglas de taller automáticas (cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra).
-• Generación de Presupuesto Formal al instante para WhatsApp / Visual con detalle técnico, validez de 15 días y condiciones comerciales (50% de seña para mandar a fabricar, saldo contra entrega).
-• Acceso multiusuario Mobile-First para celulares del personal y computadoras de mostrador.
+• ${catalogo}
+• ${reglas}
+• Acceso multiusuario Mobile-First para celulares del personal y computadoras de mostrador sin instalaciones pesadas.
+*(La versión de prueba provista es una demo para validar la ergonomía previa a la carga completa de tus planillas).*
 
 *2️⃣ ADICIONALES Y ESCALABILIDAD A FUTURO*
 *CUALQUIER FUNCIONALIDAD ADICIONAL O IDEA QUE TENGAS PARA TU NEGOCIO SE PUEDE DESARROLLAR A MEDIDA CON PRECIO CERRADO LLAVE EN MANO.*
 
-Módulos de mejora disponibles para sumar cuando lo precises:
-💰 *Módulo de Señas & Cobranzas:* Control de pagos recibidos, señas del 50% y saldos pendientes por cliente.
-👥 *CRM de Clientes & Marketing:* Base de datos de consultas para seguimiento comercial, avisos y promociones.
-🌐 *Portal Web Público 24/7:* Cotizador abierto en tu página web o redes sociales para recibir solicitudes de clientes día y noche.
+Módulos sugeridos para incorporar cuando lo necesites:
+*${mod1T}:* ${mod1D}
+*${mod2T}:* ${mod2D}
+*${mod3T}:* ${mod3D}
 
 *3️⃣ INVERSIÓN Y PLAZOS*
-• *Setup Inicial (Pago Único):* USD 250 (digitalización de fórmulas, configuración de catálogo y puesta en marcha).
-• *Abono Mensual de Soporte:* USD 30 / mes (alojamiento en la nube de alta disponibilidad, actualizaciones de precios de listas y soporte continuo).
+• *Setup Inicial (Pago Único):* USD ${setup} (digitalización de fórmulas, configuración de catálogo y puesta en marcha).
+• *Abono Mensual de Soporte:* USD ${abono} / mes (alojamiento en la nube de alta disponibilidad, actualizaciones de precios de listas y soporte continuo).
 • *Plazo de Entrega:* 5 a 7 días hábiles tras recibir planillas base.
 
-*Grupo AGN • Soluciones Web & Mobile a Medida*`;
+*Grupo AGN • Soluciones Web & Mobile a Medida*
+contacto@grupoagn.com`;
 
       navigator.clipboard.writeText(textoPropuesta).then(() => {
         const toast = document.getElementById('toastPropuestaCopiada');
@@ -551,7 +676,7 @@ Módulos de mejora disponibles para sumar cuando lo precises:
         if (btnTexto) btnTexto.innerText = '¡Propuesta Copiada!';
         setTimeout(() => {
           if (toast) toast.classList.add('hidden');
-          if (btnTexto) btnTexto.innerText = 'Copiar Texto de Propuesta';
+          if (btnTexto) btnTexto.innerText = 'Copiar Propuesta Adaptada';
         }, 3000);
       });
     }
