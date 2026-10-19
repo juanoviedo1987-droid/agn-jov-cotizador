@@ -134,6 +134,25 @@
     <main class="flex-1 overflow-y-auto p-4 sm:p-8 bg-slate-100">
       <div class="max-w-4xl mx-auto space-y-6">
 
+        <!-- Selector Móvil Rápido de Procedimientos (Visible en smartphones) -->
+        <div class="md:hidden flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+          <button onclick="mostrarSeccion('cuestionario')" id="tab-cuestionario" class="tab-mobile-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold transition bg-agn-purple text-white shadow-xs min-h-[44px]">
+            <span>💬 1. Cuestionario</span>
+          </button>
+          <button onclick="mostrarSeccion('propuesta-formal')" id="tab-propuesta-formal" class="tab-mobile-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-medium transition bg-white text-slate-700 border border-slate-200 min-h-[44px]">
+            <span>📄 2. Propuesta</span>
+          </button>
+          <button onclick="mostrarSeccion('flujo')" id="tab-flujo" class="tab-mobile-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-medium transition bg-white text-slate-700 border border-slate-200 min-h-[44px]">
+            <span>🔄 3. Flujo</span>
+          </button>
+          <button onclick="mostrarSeccion('cotizacion-criterio')" id="tab-cotizacion-criterio" class="tab-mobile-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-medium transition bg-white text-slate-700 border border-slate-200 min-h-[44px]">
+            <span>💎 4. Pricing</span>
+          </button>
+          <button onclick="mostrarSeccion('objeciones')" id="tab-objeciones" class="tab-mobile-btn shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-medium transition bg-white text-slate-700 border border-slate-200 min-h-[44px]">
+            <span>🛡️ 5. Objeciones</span>
+          </button>
+        </div>
+
         <!-- ================= SECCIÓN 1: CUESTIONARIO WHATSAPP ================= -->
         <div id="sec-cuestionario" class="seccion-content space-y-6">
           <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4">
@@ -536,12 +555,24 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
         btn.classList.add('text-slate-600', 'font-medium');
       });
 
+      // Actualizar botones de navegación desktop
       const target = document.getElementById('sec-' + secId);
       const btn = document.getElementById('btn-' + secId);
       if (target) target.classList.remove('hidden');
       if (btn) {
         btn.classList.add('bg-purple-50', 'text-agn-purple', 'border-purple-200', 'shadow-xs', 'font-bold');
         btn.classList.remove('text-slate-600', 'font-medium');
+      }
+
+      // Actualizar pills de navegación mobile
+      document.querySelectorAll('.tab-mobile-btn').forEach(tab => {
+        tab.classList.remove('bg-agn-purple', 'text-white', 'shadow-xs', 'font-bold');
+        tab.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200', 'font-medium');
+      });
+      const mobileTab = document.getElementById('tab-' + secId);
+      if (mobileTab) {
+        mobileTab.classList.add('bg-agn-purple', 'text-white', 'shadow-xs', 'font-bold');
+        mobileTab.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200', 'font-medium');
       }
 
       toggleMobileSidebar(false);
@@ -739,7 +770,6 @@ ${listaAdicionalesTexto}
 • *Plazo de Entrega:* 5 a 7 días hábiles tras recibir planillas base.
 
 *Grupo AGN • Soluciones Web & Mobile a Medida*
-contacto@grupoagn.com`;
 contacto@grupoagn.com`;
 
       navigator.clipboard.writeText(textoPropuesta).then(() => {

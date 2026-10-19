@@ -96,8 +96,8 @@ export default function App() {
       : `*$ ${cotizacion.precioFinalUYU.toLocaleString('es-UY')} UYU* (o aprox. USD ${cotizacion.precioFinalUSD})`;
 
     const lineaColocacion = cotizadorForm.incluyeServicio
-      ? `\n🔧 *Servicio:* ${rubroActual.servicioLabel}\n📸 *Importante:* Adjuntar foto del vano o abertura a sustituir para validar colocación.\n`
-      : `\n📦 *Modalidad:* Retiro en taller / Sin colocación\n`;
+      ? `\n🔧 *Servicio:* ${rubroActual.servicioLabel}\n`
+      : '';
 
     const mensaje = `Hola ${cotizadorForm.clienteNombre || 'estimado/a'}! 👋\n` +
       `Te paso el presupuesto formal para tu consulta de *${rubroActual.nombre}*:\n\n` +
@@ -355,52 +355,32 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Interruptor de Colocación en Obra (Switch iOS Protagónico) */}
-                <div className="space-y-2">
-                  <div 
-                    onClick={() => setCotizadorForm({ ...cotizadorForm, incluyeServicio: !cotizadorForm.incluyeServicio })}
-                    className={`flex items-center justify-between p-3.5 rounded-2xl border-2 transition-all cursor-pointer select-none min-h-[58px] ${
-                      cotizadorForm.incluyeServicio 
-                        ? 'bg-purple-50 border-[#4a208e] shadow-sm' 
-                        : 'bg-slate-50 border-slate-300 hover:border-slate-400'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base transition-colors ${
-                        cotizadorForm.incluyeServicio ? 'bg-[#4a208e] text-white shadow-xs' : 'bg-slate-200 text-slate-500'
-                      }`}>
-                        🔧
-                      </div>
-                      <div className="text-xs">
-                        <span className="font-extrabold text-slate-900 block text-sm">{rubroActual.servicioLabel}</span>
-                        <span className="text-slate-500 font-medium">
-                          {cotizadorForm.incluyeServicio ? 'Mano de obra y colocación incluida' : 'Sin colocación (Retiro en taller)'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Switch Táctil Estilo iOS */}
-                    <div className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0 ${
-                      cotizadorForm.incluyeServicio ? 'bg-[#4a208e]' : 'bg-slate-300'
+                {/* Servicio Opcional de Mano de Obra */}
+                <label className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all cursor-pointer min-h-[52px] ${
+                  cotizadorForm.incluyeServicio 
+                    ? 'bg-purple-50/80 border-[#4a208e] shadow-xs' 
+                    : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${
+                      cotizadorForm.incluyeServicio ? 'bg-[#4a208e] text-white' : 'bg-slate-200 text-slate-500'
                     }`}>
-                      <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center text-[10px] font-bold ${
-                        cotizadorForm.incluyeServicio ? 'translate-x-6 text-[#4a208e]' : 'translate-x-0 text-slate-400'
-                      }`}>
-                        {cotizadorForm.incluyeServicio ? 'SÍ' : 'NO'}
-                      </div>
+                      🔧
+                    </div>
+                    <div className="text-xs">
+                      <span className="font-bold text-slate-900 block">{rubroActual.servicioLabel}</span>
+                      <span className="text-slate-500">
+                        {cotizadorForm.incluyeServicio ? 'Instalación y mano de obra incluida' : 'Sin servicio adicional'}
+                      </span>
                     </div>
                   </div>
-
-                  {/* Banner de Recordatorio de Foto si hay Colocación */}
-                  {cotizadorForm.incluyeServicio && (
-                    <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 flex items-start gap-2.5 text-amber-950 animate-fadeIn shadow-xs">
-                      <span className="text-lg leading-none shrink-0">📸</span>
-                      <p className="text-xs leading-snug font-medium">
-                        <strong className="font-bold text-amber-900">Foto para colocación:</strong> Al enviar el presupuesto por WhatsApp, el sistema le recordará al cliente enviar una foto del vano o abertura a sustituir.
-                      </p>
-                    </div>
-                  )}
-                </div>
+                  <input
+                    type="checkbox"
+                    checked={cotizadorForm.incluyeServicio}
+                    onChange={(e) => setCotizadorForm({ ...cotizadorForm, incluyeServicio: e.target.checked })}
+                    className="w-5 h-5 text-[#4a208e] rounded-lg accent-[#4a208e] cursor-pointer"
+                  />
+                </label>
 
                 {/* Datos del Cliente */}
                 <div className="border-t border-slate-100 pt-3 grid grid-cols-2 gap-3">
