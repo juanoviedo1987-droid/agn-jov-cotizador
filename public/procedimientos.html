@@ -14,6 +14,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <!-- Librerías para Generar PDF e Imagen PNG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -218,10 +221,18 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                 <p class="text-xs sm:text-sm text-slate-500">Completá los campos o dejá los valores base. La hoja membretada se actualiza en tiempo real.</p>
               </div>
 
-              <div class="flex items-center gap-2">
-                <button onclick="copiarPropuestaFormal()" class="px-4 py-2.5 bg-gradient-to-r from-agn-purple to-agn-magenta hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-2 transition active:scale-95 cursor-pointer">
-                  <i data-lucide="copy" class="w-4 h-4"></i>
-                  <span id="btnCopiarPropuestaTexto">Copiar Propuesta Adaptada</span>
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="copiarPropuestaFormal()" class="px-3.5 py-2 bg-gradient-to-r from-agn-purple to-agn-magenta hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span id="btnCopiarPropuestaTexto">Copiar Texto</span>
+                </button>
+                <button onclick="descargarPropuestaPDF()" id="btnDescargarPDF" class="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer">
+                  <i data-lucide="file-down" class="w-3.5 h-3.5"></i>
+                  <span>Descargar PDF</span>
+                </button>
+                <button onclick="descargarPropuestaImagen()" id="btnDescargarImg" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5 transition active:scale-95 cursor-pointer">
+                  <i data-lucide="image" class="w-3.5 h-3.5"></i>
+                  <span>Descargar Imagen</span>
                 </button>
               </div>
             </div>
@@ -229,7 +240,7 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
             <!-- Toast de confirmación de propuesta -->
             <div id="toastPropuestaCopiada" class="hidden p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-800 text-xs font-bold flex items-center gap-2">
               <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
-              <span>¡Propuesta copiada al portapapeles con tus datos actuales! Lista para pegar.</span>
+              <span id="toastPropuestaMensaje">¡Propuesta copiada al portapapeles con tus datos actuales! Lista para pegar.</span>
             </div>
 
             <!-- PANEL DE CONTROL / CAMPOS EDITABLES -->
@@ -273,21 +284,29 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
                 </div>
               </div>
 
-              <!-- Selector de Adicionales Sugeridos -->
+              <!-- Selector de Adicionales Sugeridos (Hasta 5 Módulos Editables) -->
               <div class="space-y-1.5 pt-1 text-xs">
                 <span class="block font-bold text-slate-700">Módulos Adicionales para Tentar al Cliente (Editables):</span>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                   <div>
-                    <input type="text" id="inputPropMod1Titulo" value="💰 Señas & Cobranzas" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod1Desc" value="Control de señas del 50% y saldos pendientes." oninput="actualizarHojaPropuesta()" class="w-full bg-white border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                    <input type="text" id="inputPropMod1Titulo" value="📸 Módulo de Fotos de Obra" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod1Desc" value="Subida y guardado en la nube de fotos del vano a sustituir." oninput="actualizarHojaPropuesta()" class="w-full bg-white border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
                   </div>
                   <div>
-                    <input type="text" id="inputPropMod2Titulo" value="👥 CRM & Marketing" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod2Desc" value="Base de datos de clientes para seguimiento y promos." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                    <input type="text" id="inputPropMod2Titulo" value="📄 Generador PDF Oficial con Logo" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod2Desc" value="Exportación de cotizaciones en hoja membretada PDF descargable." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
                   </div>
                   <div>
-                    <input type="text" id="inputPropMod3Titulo" value="🌐 Portal Web Público 24/7" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
-                    <input type="text" id="inputPropMod3Desc" value="Cotizador abierto en tu web para recibir pedidos día y noche." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                    <input type="text" id="inputPropMod3Titulo" value="💰 Módulo de Señas & Cobranzas" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod3Desc" value="Control de señas del 50% recibidas y saldos pendientes." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                  </div>
+                  <div>
+                    <input type="text" id="inputPropMod4Titulo" value="👥 CRM & Marketing de Clientes" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod4Desc" value="Base de datos para seguimiento de presupuestos y promociones." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
+                  </div>
+                  <div class="sm:col-span-2 lg:col-span-2">
+                    <input type="text" id="inputPropMod5Titulo" value="🌐 Portal Web Abierto 24/7" oninput="actualizarHojaPropuesta()" class="w-full bg-white border border-slate-300 rounded-t-xl px-2.5 py-1.5 text-xs font-bold text-slate-800" />
+                    <input type="text" id="inputPropMod5Desc" value="Cotizador público integrado a tu web o redes sociales para recibir solicitudes día y noche." oninput="actualizarHojaPropuesta()" class="w-full border-x border-b border-slate-300 rounded-b-xl px-2.5 py-1.5 text-[11px] text-slate-500" />
                   </div>
                 </div>
               </div>
@@ -354,18 +373,26 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
 
                 <div class="space-y-1.5 text-xs text-slate-600 pl-2">
                   <span class="font-bold text-slate-800 block text-[11px] uppercase tracking-wide">Propuestas y Módulos de mejora disponibles para incorporar cuando lo necesites:</span>
-                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 pt-1">
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod1Titulo" class="text-slate-900 block font-bold text-xs">💰 Señas & Cobranzas</strong>
-                      <span id="vistaPropMod1Desc" class="text-[11px] text-slate-500 block leading-tight">Control de señas del 50% y saldos pendientes.</span>
+                      <strong id="vistaPropMod1Titulo" class="text-slate-900 block font-bold text-xs">📸 Módulo de Fotos de Obra</strong>
+                      <span id="vistaPropMod1Desc" class="text-[11px] text-slate-500 block leading-tight">Subida y guardado en la nube de fotos del vano a sustituir.</span>
                     </div>
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod2Titulo" class="text-slate-900 block font-bold text-xs">👥 CRM & Marketing</strong>
-                      <span id="vistaPropMod2Desc" class="text-[11px] text-slate-500 block leading-tight">Base de datos de clientes para seguimiento y promos.</span>
+                      <strong id="vistaPropMod2Titulo" class="text-slate-900 block font-bold text-xs">📄 Generador PDF Oficial con Logo</strong>
+                      <span id="vistaPropMod2Desc" class="text-[11px] text-slate-500 block leading-tight">Exportación de cotizaciones en hoja membretada PDF descargable.</span>
                     </div>
                     <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
-                      <strong id="vistaPropMod3Titulo" class="text-slate-900 block font-bold text-xs">🌐 Portal Web Público 24/7</strong>
-                      <span id="vistaPropMod3Desc" class="text-[11px] text-slate-500 block leading-tight">Cotizador abierto en tu web para recibir pedidos día y noche.</span>
+                      <strong id="vistaPropMod3Titulo" class="text-slate-900 block font-bold text-xs">💰 Módulo de Señas & Cobranzas</strong>
+                      <span id="vistaPropMod3Desc" class="text-[11px] text-slate-500 block leading-tight">Control de señas del 50% recibidas y saldos pendientes.</span>
+                    </div>
+                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1">
+                      <strong id="vistaPropMod4Titulo" class="text-slate-900 block font-bold text-xs">👥 CRM & Marketing de Clientes</strong>
+                      <span id="vistaPropMod4Desc" class="text-[11px] text-slate-500 block leading-tight">Base de datos para seguimiento de presupuestos y promociones.</span>
+                    </div>
+                    <div class="p-2.5 bg-white rounded-lg border border-slate-200 space-y-1 sm:col-span-2 lg:col-span-2">
+                      <strong id="vistaPropMod5Titulo" class="text-slate-900 block font-bold text-xs">🌐 Portal Web Abierto 24/7</strong>
+                      <span id="vistaPropMod5Desc" class="text-[11px] text-slate-500 block leading-tight">Cotizador público integrado a tu web o redes sociales para recibir solicitudes día y noche.</span>
                     </div>
                   </div>
                 </div>
@@ -578,7 +605,7 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       });
     }
 
-    // Sincronización en vivo de la Propuesta Formal
+    // Sincronización en vivo de la Propuesta Formal (5 Módulos)
     function actualizarHojaPropuesta() {
       const cliente = document.getElementById('inputPropCliente').value || '[Nombre del Cliente]';
       const rubro = document.getElementById('inputPropRubro').value || 'Gestión y Cotizaciones a Medida';
@@ -593,6 +620,10 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       const mod2D = document.getElementById('inputPropMod2Desc').value;
       const mod3T = document.getElementById('inputPropMod3Titulo').value;
       const mod3D = document.getElementById('inputPropMod3Desc').value;
+      const mod4T = document.getElementById('inputPropMod4Titulo').value;
+      const mod4D = document.getElementById('inputPropMod4Desc').value;
+      const mod5T = document.getElementById('inputPropMod5Titulo').value;
+      const mod5D = document.getElementById('inputPropMod5Desc').value;
 
       document.getElementById('vistaPropCliente').innerText = cliente;
       document.getElementById('vistaPropRubro').innerText = rubro;
@@ -607,6 +638,10 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       document.getElementById('vistaPropMod2Desc').innerText = mod2D;
       document.getElementById('vistaPropMod3Titulo').innerText = mod3T;
       document.getElementById('vistaPropMod3Desc').innerText = mod3D;
+      document.getElementById('vistaPropMod4Titulo').innerText = mod4T;
+      document.getElementById('vistaPropMod4Desc').innerText = mod4D;
+      document.getElementById('vistaPropMod5Titulo').innerText = mod5T;
+      document.getElementById('vistaPropMod5Desc').innerText = mod5D;
     }
 
     function restablecerValoresBase() {
@@ -617,12 +652,16 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       document.getElementById('inputPropCatalogo').value = 'Digitalización completa de tu catálogo de productos y carpintería (aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).';
       document.getElementById('inputPropReglas').value = 'Cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra. Mensaje formal estructurado con 15 días de validez y 50% de seña.';
 
-      document.getElementById('inputPropMod1Titulo').value = '💰 Señas & Cobranzas';
-      document.getElementById('inputPropMod1Desc').value = 'Control de señas del 50% y saldos pendientes.';
-      document.getElementById('inputPropMod2Titulo').value = '👥 CRM & Marketing';
-      document.getElementById('inputPropMod2Desc').value = 'Base de datos de clientes para seguimiento y promos.';
-      document.getElementById('inputPropMod3Titulo').value = '🌐 Portal Web Público 24/7';
-      document.getElementById('inputPropMod3Desc').value = 'Cotizador abierto en tu web para recibir pedidos día y noche.';
+      document.getElementById('inputPropMod1Titulo').value = '📸 Módulo de Fotos de Obra';
+      document.getElementById('inputPropMod1Desc').value = 'Subida y guardado en la nube de fotos del vano a sustituir.';
+      document.getElementById('inputPropMod2Titulo').value = '📄 Generador PDF Oficial con Logo';
+      document.getElementById('inputPropMod2Desc').value = 'Exportación de cotizaciones en hoja membretada PDF descargable.';
+      document.getElementById('inputPropMod3Titulo').value = '💰 Módulo de Señas & Cobranzas';
+      document.getElementById('inputPropMod3Desc').value = 'Control de señas del 50% recibidas y saldos pendientes.';
+      document.getElementById('inputPropMod4Titulo').value = '👥 CRM & Marketing de Clientes';
+      document.getElementById('inputPropMod4Desc').value = 'Base de datos para seguimiento de presupuestos y promociones.';
+      document.getElementById('inputPropMod5Titulo').value = '🌐 Portal Web Abierto 24/7';
+      document.getElementById('inputPropMod5Desc').value = 'Cotizador público integrado a tu web o redes sociales para recibir solicitudes día y noche.';
 
       actualizarHojaPropuesta();
     }
@@ -642,6 +681,10 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
       const mod2D = document.getElementById('inputPropMod2Desc').value;
       const mod3T = document.getElementById('inputPropMod3Titulo').value;
       const mod3D = document.getElementById('inputPropMod3Desc').value;
+      const mod4T = document.getElementById('inputPropMod4Titulo').value;
+      const mod4D = document.getElementById('inputPropMod4Desc').value;
+      const mod5T = document.getElementById('inputPropMod5Titulo').value;
+      const mod5D = document.getElementById('inputPropMod5Desc').value;
 
       const textoPropuesta = `*GRUPO AGN | Propuesta Comercial*
 *Cliente:* ${cliente}
@@ -660,6 +703,8 @@ Módulos sugeridos para incorporar cuando lo necesites:
 *${mod1T}:* ${mod1D}
 *${mod2T}:* ${mod2D}
 *${mod3T}:* ${mod3D}
+*${mod4T}:* ${mod4D}
+*${mod5T}:* ${mod5D}
 
 *3️⃣ INVERSIÓN Y PLAZOS*
 • *Setup Inicial (Pago Único):* USD ${setup} (digitalización de fórmulas, configuración de catálogo y puesta en marcha).
@@ -671,13 +716,71 @@ contacto@grupoagn.com`;
 
       navigator.clipboard.writeText(textoPropuesta).then(() => {
         const toast = document.getElementById('toastPropuestaCopiada');
+        const toastMsg = document.getElementById('toastPropuestaMensaje');
         const btnTexto = document.getElementById('btnCopiarPropuestaTexto');
+        if (toastMsg) toastMsg.innerText = '¡Propuesta copiada al portapapeles con tus datos actuales! Lista para pegar.';
         if (toast) toast.classList.remove('hidden');
-        if (btnTexto) btnTexto.innerText = '¡Propuesta Copiada!';
+        if (btnTexto) btnTexto.innerText = '¡Copiado!';
         setTimeout(() => {
           if (toast) toast.classList.add('hidden');
-          if (btnTexto) btnTexto.innerText = 'Copiar Propuesta Adaptada';
+          if (btnTexto) btnTexto.innerText = 'Copiar Texto';
         }, 3000);
+      });
+    }
+
+    // Descargar Propuesta en Imagen PNG
+    function descargarPropuestaImagen() {
+      const elemento = document.getElementById('hojaPropuestaFormal');
+      const cliente = (document.getElementById('inputPropCliente').value || 'Cliente').replace(/\s+/g, '_');
+      
+      const btn = document.getElementById('btnDescargarImg');
+      if (btn) btn.innerText = 'Generando...';
+
+      html2canvas(elemento, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Propuesta_Comercial_AGN_${cliente}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        if (btn) btn.innerText = 'Descargar Imagen';
+        
+        const toast = document.getElementById('toastPropuestaCopiada');
+        const toastMsg = document.getElementById('toastPropuestaMensaje');
+        if (toastMsg) toastMsg.innerText = '¡Imagen PNG generada y descargada con éxito!';
+        if (toast) toast.classList.remove('hidden');
+        setTimeout(() => { if (toast) toast.classList.add('hidden'); }, 3000);
+      }).catch(err => {
+        console.error(err);
+        if (btn) btn.innerText = 'Descargar Imagen';
+      });
+    }
+
+    // Descargar Propuesta en PDF
+    function descargarPropuestaPDF() {
+      const elemento = document.getElementById('hojaPropuestaFormal');
+      const cliente = (document.getElementById('inputPropCliente').value || 'Cliente').replace(/\s+/g, '_');
+      
+      const btn = document.getElementById('btnDescargarPDF');
+      if (btn) btn.innerText = 'Generando PDF...';
+
+      html2canvas(elemento, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Propuesta_Comercial_AGN_${cliente}.pdf`);
+        if (btn) btn.innerText = 'Descargar PDF';
+
+        const toast = document.getElementById('toastPropuestaCopiada');
+        const toastMsg = document.getElementById('toastPropuestaMensaje');
+        if (toastMsg) toastMsg.innerText = '¡Documento PDF membretado generado y descargado con éxito!';
+        if (toast) toast.classList.remove('hidden');
+        setTimeout(() => { if (toast) toast.classList.add('hidden'); }, 3000);
+      }).catch(err => {
+        console.error(err);
+        if (btn) btn.innerText = 'Descargar PDF';
       });
     }
   </script>
