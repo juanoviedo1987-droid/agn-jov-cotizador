@@ -93,13 +93,17 @@ export default function App() {
       ? `*USD ${cotizacion.precioFinalUSD}* (o aprox. $ ${cotizacion.precioFinalUYU.toLocaleString('es-UY')} UYU)`
       : `*$ ${cotizacion.precioFinalUYU.toLocaleString('es-UY')} UYU* (o aprox. USD ${cotizacion.precioFinalUSD})`;
 
+    const lineaColocacion = cotizadorForm.incluyeServicio
+      ? `\n🔧 *Servicio:* ${rubroActual.servicioLabel}\n📸 *Importante:* Adjuntar foto del vano o abertura a sustituir para validar colocación.\n`
+      : `\n📦 *Modalidad:* Retiro en taller / Sin colocación\n`;
+
     const mensaje = `Hola ${cotizadorForm.clienteNombre || 'estimado/a'}! 👋\n` +
       `Te paso el presupuesto formal para tu consulta de *${rubroActual.nombre}*:\n\n` +
       `📦 *Trabajo / Concepto:* ${cotizacion.producto.nombre}\n` +
       `📏 *Especificación / Medidas:* ${cotizacion.medidasTexto}\n` +
       `⭐ *Nivel de Terminación:* ${cotizacion.calidad.nombre}\n` +
-      (cotizadorForm.incluyeServicio ? `✅ *Incluye:* ${rubroActual.servicioLabel}\n\n` : `\n`) +
-      `💰 *Total Presupuestado:* ${textoPrecio}\n\n` +
+      lineaColocacion +
+      `\n💰 *Total Presupuestado:* ${textoPrecio}\n\n` +
       `⏱️ *Plazo estimado:* 7 a 15 días hábiles.\n` +
       `📋 *Validez:* 15 días corridos.\n\n` +
       `¿Querés que coordinemos una visita técnica para rectificar medidas o tenés alguna consulta?`;
@@ -345,19 +349,44 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Servicio Adicional */}
-                <label className="flex items-center gap-3 p-3 bg-purple-50/50 rounded-2xl border border-purple-100 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={cotizadorForm.incluyeServicio}
-                    onChange={(e) => setCotizadorForm({ ...cotizadorForm, incluyeServicio: e.target.checked })}
-                    className="w-5 h-5 text-[#4a208e] rounded-lg accent-[#4a208e]"
-                  />
-                  <div className="text-xs">
-                    <span className="font-bold text-slate-900 block">{rubroActual.servicioLabel}</span>
-                    <span className="text-slate-500">Suma mano de obra e instalación</span>
-                  </div>
-                </label>
+                {/* Interruptor de Colocación en Obra + Aviso de Foto de Sustitución */}
+                <div className="space-y-2">
+                  <label className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all cursor-pointer min-h-[52px] ${
+                    cotizadorForm.incluyeServicio 
+                      ? 'bg-purple-50/80 border-[#4a208e] shadow-xs' 
+                      : 'bg-slate-50 border-slate-200'
+                  }`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${
+                        cotizadorForm.incluyeServicio ? 'bg-[#4a208e] text-white' : 'bg-slate-200 text-slate-500'
+                      }`}>
+                        🔧
+                      </div>
+                      <div className="text-xs">
+                        <span className="font-bold text-slate-900 block">{rubroActual.servicioLabel}</span>
+                        <span className="text-slate-500">
+                          {cotizadorForm.incluyeServicio ? 'Instalación y mano de obra en obra' : 'Sin colocación (Retiro en taller)'}
+                        </span>
+                      </div>
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={cotizadorForm.incluyeServicio}
+                      onChange={(e) => setCotizadorForm({ ...cotizadorForm, incluyeServicio: e.target.checked })}
+                      className="w-5 h-5 text-[#4a208e] rounded-lg accent-[#4a208e] cursor-pointer"
+                    />
+                  </label>
+
+                  {/* Banner de Recordatorio de Foto si hay Colocación */}
+                  {cotizadorForm.incluyeServicio && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-start gap-2.5 text-amber-900 animate-fadeIn">
+                      <span className="text-base leading-none">📸</span>
+                      <p className="text-[11px] leading-tight font-medium">
+                        <strong className="font-bold">Recordatorio:</strong> Al enviar el presupuesto por WhatsApp, se le solicitará al cliente una foto del vano o abertura a sustituir para validar la colocación.
+                      </p>
+                    </div>
+                  )}
+                </div>
 
                 {/* Datos del Cliente */}
                 <div className="border-t border-slate-100 pt-3 grid grid-cols-2 gap-3">
