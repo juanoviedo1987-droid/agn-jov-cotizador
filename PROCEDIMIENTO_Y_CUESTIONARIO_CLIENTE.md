@@ -73,3 +73,33 @@ Con esos datos te preparamos la propuesta y te mostramos cómo quedaría funcion
 3. **Presentación al cliente:**  
    **Precio Cerrado Llave en Mano** por la función terminada.
    * *Ejemplo:* App Base USD 250 + Función Generador de PDF USD 90 = **Total cerrado USD 340**.
+
+---
+
+## 📄 5. Modelo de Propuesta Formal Oficial (Para Enviar en PDF o Copiar)
+
+```text
+*GRUPO AGN | Propuesta Comercial*
+*Sistema Cotizador Web Móvil & Taller*
+
+*1️⃣ ¿QUÉ INCLUYE LA APLICACIÓN BASE?*
+• Digitalización completa de tu catálogo de productos y carpintería (Aberturas, mamparas, líneas completas con todas sus medidas ancho x alto, colores de perfilería y selección de cristales).
+• Fórmulas y reglas de taller automáticas (cálculo instantáneo por medidas, recargos de series superiores y switch con/sin colocación en obra).
+• Generación de Presupuesto Formal al instante para WhatsApp / Visual con detalle técnico, validez de 15 días y condiciones comerciales (50% de seña para mandar a fabricar, saldo contra entrega).
+• Acceso multiusuario Mobile-First para celulares del personal y computadoras de mostrador.
+
+*2️⃣ ADICIONALES Y ESCALABILIDAD A FUTURO*
+*CUALQUIER FUNCIONALIDAD ADICIONAL O IDEA QUE TENGAS PARA TU NEGOCIO SE PUEDE DESARROLLAR A MEDIDA CON PRECIO CERRADO LLAVE EN MANO.*
+
+Módulos de mejora disponibles para sumar cuando lo precises:
+💰 *Módulo de Señas & Cobranzas:* Control de pagos recibidos, señas del 50% y saldos pendientes por cliente.
+👥 *CRM de Clientes & Marketing:* Base de datos de consultas para seguimiento comercial, avisos y promociones.
+🌐 *Portal Web Público 24/7:* Cotizador abierto en tu página web o redes sociales para recibir solicitudes de clientes día y noche.
+
+*3️⃣ INVERSIÓN Y PLAZOS*
+• *Setup Inicial (Pago Único):* USD 250 (digitalización de fórmulas, configuración de catálogo y puesta en marcha).
+• *Abono Mensual de Soporte:* USD 30 / mes (alojamiento en la nube de alta disponibilidad, actualizaciones de precios de listas y soporte continuo).
+• *Plazo de Entrega:* 5 a 7 días hábiles tras recibir planillas base.
+
+*Grupo AGN • Soluciones Web & Mobile a Medida*
+```
